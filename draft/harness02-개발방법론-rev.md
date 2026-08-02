@@ -120,7 +120,7 @@ AI는 왜 이 설계가 존재하는지, 어떤 대안이 왜 기각되었는지
 
 ## 5. Subagent-Driven Development — 테스트 코드와 실제 코드를 만든다
 
-이 단계는 구현 전 문서 세계와 구현된 시스템을 잇는 명확한 전환점이다. `subagent-driven-development`는 테스트 코드와 production source code를 만든다.
+이 단계는 구현 전 문서 세계와 구현된 시스템을 잇는 명확한 전환점이다. `subagent-driven-development`는 테스트 코드와 실제 소스코드를 만든다.
 
 ### 왜 필요한가
 
@@ -128,11 +128,11 @@ spec과 plan이 원하는 동작을 말한다면, 이 단계는 그것을 실행
 
 ### AI에게 강제할 질문
 
-AI는 한 task의 요구 행동을 먼저 실패하는 테스트로 표현한다. 그 실패는 원하는 행동이 우연히 이미 통과하고 있지 않음을 보여 준다. 이어서 그 행동만 통과시키는 최소 production code를 작성하고, 관련 테스트를 실행한다.
+AI는 한 task의 요구 행동을 먼저 실패하는 테스트로 표현한다. 그 실패는 원하는 행동이 우연히 이미 통과하고 있지 않음을 보여 준다. 이어서 그 행동만 통과시키는 최소 실제 소스코드를 작성하고, 관련 테스트를 실행한다.
 
 ### 사람이 확인할 것
 
-사람은 두 종류의 검토를 구분한다. 요구사항 검토는 code가 spec/plan에 맞는지 확인하고, 코드 품질 검토는 유지보수성, 경계, 이름, 오류 처리와 구현 품질을 확인한다. 많은 agent를 병렬로 돌렸거나 생성된 코드가 많다는 사실은 정확성의 증거가 아니다.
+사람은 두 종류의 검토를 구분한다. 요구사항 검토는 실제 소스코드가 spec/plan에 맞는지 확인하고, 코드 품질 검토는 유지보수성, 경계, 이름, 오류 처리와 구현 품질을 확인한다. 많은 agent를 병렬로 돌렸거나 생성된 코드가 많다는 사실은 정확성의 증거가 아니다.
 
 ### 입력과 산출물
 
@@ -159,7 +159,7 @@ subagent-driven-development
 
 ### 왜 필요한가
 
-구현이 끝난 뒤에는 계획이 아니라 실제 코드가 현재의 동작을 말한다. `spec-flow-e2e`는 Playwright나 Cypress E2E 테스트 코드를 생성하는 skill이 아니다. production source code를 읽어 시스템 흐름을 복원하는 구현 후 문서화 단계다.
+구현이 끝난 뒤에는 계획이 아니라 실제 코드가 현재의 동작을 말한다. `spec-flow-e2e`는 Playwright나 Cypress E2E 테스트 코드를 생성하는 skill이 아니다. 실제 소스코드를 읽어 시스템 흐름을 복원하는 구현 후 문서화 단계다.
 
 ### AI에게 강제할 질문
 
@@ -171,7 +171,7 @@ AI는 front → back → db → back → front의 흐름을 실제 파일에서 
 
 ### 입력과 산출물
 
-입력은 plan과 구현된 source code다. 산출물은 `e2e/<stem>-e2e.md`다. e2e 문서의 정본은 production source code이며, plan·spec·explained 문서는 현재 동작의 권위가 아니다.
+입력은 plan과 구현된 실제 소스코드다. 산출물은 `e2e/<stem>-e2e.md`다. e2e 문서의 정본은 실제 소스코드이며, plan·spec·explained 문서는 현재 동작의 권위가 아니다.
 
 ### 다음 단계로 넘기는 것
 
@@ -179,7 +179,7 @@ AI는 front → back → db → back → front의 흐름을 실제 파일에서 
 
 ### 주니어가 흔히 하는 오해
 
-구현된 source files를 열지 않고 plan에 있던 class name과 code snippet을 복사하는 일이다. 계획과 코드가 다를 수 있으므로, 흐름은 반드시 구현된 파일에서 다시 읽어야 한다.
+구현된 파일을 열지 않고 plan에 있던 클래스 이름과 코드 조각을 복사하는 일이다. 계획과 코드가 다를 수 있으므로, 흐름은 반드시 구현된 파일에서 다시 읽어야 한다.
 
 ## 7. Spec Wiki — 끝난 작업을 다음 작업의 지식으로 바꾼다
 
@@ -197,11 +197,11 @@ AI는 네 종류의 원문을 같은 stem으로 묶고, 현재 동작의 설명�
 
 ### 입력과 산출물
 
-입력은 같은 stem의 spec, plan, explained, e2e 문서다. 산출물은 `wiki/<stem>-wiki.md`, `wiki/index.md`, `wiki/index.json`, `dashboard.html`이다. 이 작업은 source documents를 이동하거나 수정하지 않으며, wiki도 정본이 아니다. 원문 네 종류는 각자의 정본 관계를 계속 유지한다.
+입력은 같은 stem의 spec, plan, explained, e2e 문서다. 산출물은 `wiki/<stem>-wiki.md`, `wiki/index.md`, `wiki/index.json`, `dashboard.html`이다. 이 작업은 원문을 이동하거나 수정하지 않으며, wiki도 정본이 아니다. 원문 네 종류는 각자의 정본 관계를 계속 유지한다.
 
 ### 다음 단계로 넘기는 것
 
-원문 해시를 이용한 incremental regeneration은 바뀐 지식만 다시 만들어, 변하지 않은 페이지를 불필요하게 덮어쓰지 않는다. 이렇게 최신성을 유지한 위키와 색인은 이후 사람과 AI가 검색해 다음 `brainstorming`의 컨텍스트로 사용한다.
+원문 해시를 이용한 증분 재생성은 바뀐 지식만 다시 만들어, 변하지 않은 페이지를 불필요하게 덮어쓰지 않는다. 이렇게 최신성을 유지한 위키와 색인은 이후 사람과 AI가 검색해 다음 `brainstorming`의 컨텍스트로 사용한다.
 
 ### 주니어가 흔히 하는 오해
 
