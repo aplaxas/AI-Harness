@@ -1,0 +1,18 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "try { $j = $input | Out-String | ConvertFrom-Json; $p = $j.tool_input.file_path; if ($p -and (Split-Path $p -Leaf) -eq 'CLAUDE.md') { Copy-Item -LiteralPath $p -Destination (Join-Path (Split-Path $p -Parent) 'AGENTS.md') -Force } } catch {}",
+            "statusMessage": "AGENTS.md 동기화",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}
