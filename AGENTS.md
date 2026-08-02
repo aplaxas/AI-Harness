@@ -14,12 +14,12 @@ This file provides guidance to Claude Code/Codex when working with code in this 
 
 | 경로 | 내용 |
 | --- | --- |
-| [draft/](draft/) | 원고 본문. `harnessNN-<주제>.md` 연작 |
-| [draft/images/](draft/images/) | 본문 삽화 |
+| [harness/](harness/) | 원고 본문. `NN-<주제>.md` 연작 |
+| [harness/images/](harness/images/) | 본문 삽화 |
 | [docs/superpowers/](docs/superpowers/) | 원고 작업의 spec/plan (작업 기록, 강의 자료 아님) |
 | `simple-ai-literacy/` | 참고용 기존 PPT. 아이디어만 재해석하고 복제하지 않는다 |
 
-**시리즈는 집필 중이고 편수는 늘어난다.** 현재 구성과 각 편이 답하는 질문은 [1편](draft/harness01-하네스란무엇인가.md)의 "이 시리즈의 나머지" 표가 정본이다. 편을 추가하거나 순서를 바꾸면 그 표와 각 편 서두의 앞뒤 링크를 함께 고친다. 여기 CLAUDE.md에는 편 목록을 복제하지 않는다 — 금방 낡는다.
+**시리즈는 집필 중이고 편수는 늘어난다.** 현재 구성과 각 편이 답하는 질문은 [1편](harness/01-하네스란무엇인가.md)의 "이 시리즈의 나머지" 표가 정본이다. 편을 추가하거나 순서를 바꾸면 그 표와 각 편 서두의 앞뒤 링크를 함께 고친다. 여기 CLAUDE.md에는 편 목록을 복제하지 않는다 — 금방 낡는다.
 
 큰 흐름은 **왜(개념) → 무엇을(원칙) → 어떻게(흐름) → 어떤 파일로(실습)** 순이고, 앞쪽이 개념의 뼈대, 뒤쪽이 실제 저장소 시연으로 이어진다.
 
@@ -70,13 +70,13 @@ This file provides guidance to Claude Code/Codex when working with code in this 
 
 ```powershell
 # 공백·개행 오류
-git diff --check -- 'draft/'
+git diff --check -- 'harness/'
 
 # 깨진 상대 링크·이미지 경로만 출력
-Select-String -Path 'draft/*.md' -Pattern '\]\(([^)]+)\)' -AllMatches |
+Select-String -Path 'harness/*.md' -Pattern '\]\(([^)]+)\)' -AllMatches |
   ForEach-Object { $_.Matches } | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique |
   Where-Object { $_ -notmatch '^https?:' } |
-  Where-Object { -not (Test-Path (Join-Path 'draft' ($_ -replace '#.*$',''))) }
+  Where-Object { -not (Test-Path (Join-Path 'harness' ($_ -replace '#.*$',''))) }
 ```
 
 `rg`는 PowerShell PATH에 없다. 검색은 Grep 도구나 `Select-String`을 쓴다.
