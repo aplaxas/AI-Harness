@@ -28,6 +28,8 @@ spec-wiki
 다음 brainstorming의 컨텍스트
 ```
 
+사용자가 흔히 `write-plan` 단계라고 부르는 흐름의 실제 skill 이름은 `superpowers:writing-plans`다.
+
 이 지도는 문서를 차례로 배달하는 컨베이어 벨트가 아니라 순환이다. `spec-wiki`가 만든 지식과 `spec-flow-e2e`가 실제 코드에서 복원한 흐름은 다음 `brainstorming`에서 질문의 질을 높이는 컨텍스트가 된다. 그러므로 어느 단계의 문서도 그 자체가 끝이 아니다.
 
 ## 2. Brainstorming — 무엇을 만들지 합의한다
@@ -58,7 +60,7 @@ brainstorming을 자유로운 아이디어 회의로만 생각해 문서화된 s
 
 ## 3. Writing Plans — 합의를 검증 가능한 구현 순서로 바꾼다
 
-사용자가 흔히 `write-plan` 단계라고 부르는 흐름의 실제 skill 이름은 `superpowers:writing-plans`다. 이 단계는 spec을 하나의 큰 할 일로 두지 않고, 각각 독립적으로 구현하고 검토할 수 있는 작은 task로 분해한다.
+이 단계는 spec을 하나의 큰 할 일로 두지 않고, 각각 독립적으로 구현하고 검토할 수 있는 작은 task로 분해한다.
 
 ### 왜 필요한가
 
