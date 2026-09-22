@@ -57,6 +57,22 @@ Get-ChildItem -Path 'courses' -Filter '*.md' -Recurse | ForEach-Object {
 }
 ```
 
+zsh/bash (macOS)에서는 이렇게 한다.
+
+```bash
+# 공백·개행 오류
+git diff --check -- 'courses/'
+
+# 깨진 상대 링크·이미지 경로만 출력
+find courses -name '*.md' | while read -r f; do
+  d=$(dirname "$f")
+  grep -oE '\]\([^)]+\)' "$f" | sed 's/^](//; s/)$//' | grep -v '^https\?:' | sed 's/#.*$//' |
+  while read -r l; do
+    [ -n "$l" ] && [ ! -e "$d/$l" ] && echo "BROKEN: $f -> $l"
+  done
+done
+```
+
 `rg`는 PowerShell PATH에 없다. 검색은 Grep 도구나 `Select-String`을 쓴다.
 
 ## 커밋

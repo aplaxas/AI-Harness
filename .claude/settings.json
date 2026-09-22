@@ -7,8 +7,14 @@
           {
             "type": "command",
             "shell": "powershell",
-            "command": "try { $j = $input | Out-String | ConvertFrom-Json; $p = $j.tool_input.file_path; if ($p -and (Split-Path $p -Leaf) -eq 'CLAUDE.md') { Copy-Item -LiteralPath $p -Destination (Join-Path (Split-Path $p -Parent) 'AGENTS.md') -Force } } catch {}",
-            "statusMessage": "AGENTS.md 동기화",
+            "command": "try { Get-ChildItem -Path . -Filter CLAUDE.md -Recurse -File | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $_.DirectoryName 'AGENTS.md') -Force } } catch {}",
+            "statusMessage": "AGENTS.md 동기화 (Windows)",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "find . -name CLAUDE.md -not -path './.git/*' -exec sh -c 'cp \"$1\" \"$(dirname \"$1\")/AGENTS.md\"' _ {} \\; 2>/dev/null || true",
+            "statusMessage": "AGENTS.md 동기화 (POSIX)",
             "timeout": 15
           }
         ]

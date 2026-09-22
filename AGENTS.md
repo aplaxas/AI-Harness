@@ -6,63 +6,37 @@ This file provides guidance to Claude Code/Codex when working with code in this 
 
 ## 이 저장소는 무엇인가
 
-**주니어 개발자 대상 하루짜리 강의 자료**다. 코드 저장소가 아니라 한국어 원고 저장소이므로 빌드·테스트가 없다.
+**강의 자료 저장소**다. 코드가 아니라 한국어 원고를 담으므로 빌드·테스트가 없다.
 
-강의 목표는 **AI Harness가 왜 필요하고 무엇인지 개념을 잡은 뒤, 실제 개발에서 그것을 어떻게 쓰는지까지 보여주는 것**이다. 저자의 실무 경험을 전달하는 것이 목적이므로, 원고는 전부 저자 1인칭이다. 교과서가 아니라 **"나는 이렇게 한다"의 기록**이라는 톤을 유지한다.
+강의 하나가 `courses/<강의>/` 폴더 하나를 쓴다. 그 강의의 **청중·목표·가드레일·뼈대는 그 폴더의 `CLAUDE.md`에 있다.** 이 파일에는 모든 강의에 공통인 것만 둔다. 어떤 강의의 일을 하든 먼저 그 폴더의 `CLAUDE.md`를 읽는다.
 
-## 파일
+## 폴더
 
 | 경로 | 내용 |
 | --- | --- |
-| [harness/](harness/) | 원고 본문. `NN-<주제>.md` 연작 |
-| [harness/images/](harness/images/) | 본문 삽화 |
-| [docs/superpowers/](docs/superpowers/) | 원고 작업의 spec/plan (작업 기록, 강의 자료 아님) |
-| `simple-ai-literacy/` | 참고용 기존 PPT. 아이디어만 재해석하고 복제하지 않는다 |
+| [courses/ai-harness/](courses/ai-harness/) | 주니어 개발자 대상 AI Harness 강의. **끝난 강의로 동결** |
+| [courses/ai-for-work/](courses/ai-for-work/) | 사무직·소상공인 대상 강의. 준비 중 |
+| [docs/superpowers/](docs/superpowers/) | 전 강의의 spec/plan (작업 기록, 강의 자료 아님) |
 
-**시리즈는 집필 중이고 편수는 늘어난다.** 현재 구성과 각 편이 답하는 질문은 [1편](harness/01-하네스란무엇인가.md)의 "이 시리즈의 나머지" 표가 정본이다. 편을 추가하거나 순서를 바꾸면 그 표와 각 편 서두의 앞뒤 링크를 함께 고친다. 여기 CLAUDE.md에는 편 목록을 복제하지 않는다 — 금방 낡는다.
-
-큰 흐름은 **왜(개념) → 무엇을(원칙) → 어떻게(흐름) → 어떤 파일로(실습)** 순이고, 앞쪽이 개념의 뼈대, 뒤쪽이 실제 저장소 시연으로 이어진다.
-
-## 가드레일
-
-**범위 안**
-
-- 주니어가 이해할 수 있는 수준의 개념 설명과 비유
-- 저자가 실제로 쓰는 방식과 도구
-- 실습에서 직접 보여줄 수 있는 것
-
-**범위 밖 — 확장하지 말 것**
-
-- 이 저장소가 다루지 않는 새로운 방법론·프레임워크·도구를 끌어오는 일
-- 저자가 안 써본 것을 써본 것처럼 쓰는 일
-- 강의 하루에 못 담는 깊이 (모델 내부 구조, 논문 수준 논의)
-- 특정 기능의 긴 코드 예시. 짧은 예시 한두 문장이면 충분하다
-
-원고 구조나 논지를 바꾸는 큰 변경은 먼저 물어본다. 문장 다듬기·오타·용어 통일은 그냥 하면 된다.
+`docs/superpowers/`는 강의별로 나누지 않고 날짜순으로 쌓는다. 과거 문서에 나오는 옛 경로는 그때의 기록이므로 고치지 않는다.
 
 ## 글쓰기 원칙
 
-- 설명형 `~다`체. 짧고 단정적인 문장, 개발자 관점의 비유.
+강의가 달라도 이건 안 바뀐다.
+
+- 원고는 전부 **저자 1인칭**이다. 교과서가 아니라 "나는 이렇게 한다"의 기록이라는 톤을 유지한다.
+- 설명형 `~다`체. 짧고 단정적인 문장.
 - 처음 나오는 용어는 그 자리에서 쉬운 말로 정의한다.
-- 사실과 해석을 구분해서 쓴다. 남의 말을 인용할 때는 **"여기서부터는 내 해석이다"**를 명시한다 (1편 토발즈 절이 그 예).
+- 사실과 해석을 구분해서 쓴다. 남의 말을 인용할 때는 **"여기서부터는 내 해석이다"**를 명시한다.
 - AI를 의인화하지 않고, "AI는 항상 비결정적이다" 같은 과한 단정을 피한다.
-- 각 편은 서두 인용 블록에서 앞뒤 편을 상대 경로로 링크한다. 한 편을 고치면 1편의 "이 시리즈의 나머지" 표도 같이 본다.
+- 저자가 안 써본 것을 써본 것처럼 쓰지 않는다.
+- 각 편은 서두 인용 블록에서 앞뒤 편을 상대 경로로 링크한다.
+
+원고 구조나 논지를 바꾸는 큰 변경은 먼저 물어본다. 문장 다듬기·오타·용어 통일은 그냥 하면 된다.
 
 ### ✍️ [채우기] 마커
 
 `> ✍️ **[채우기]**` 블록은 **저자 본인의 실제 경험이 들어갈 자리**다. 절대 지어내서 채우지 말고, 문서를 재구성할 때 그대로 보존한다.
-
-## 흔들리면 안 되는 뼈대
-
-원고 전체가 이 위에 서 있다. 새 문장이 이걸 흐리면 안 된다.
-
-- **harness = AI가 일하는 환경.** 다섯 축: 권한 · 도구 · 검증 · 상태 · 관측 (1편 정본)
-- **핵심은 검증이고, 검증 결과가 AI에게 자동으로 되먹임되어야 루프가 된다.** 생성 → 검증 → 수정 → 재검증
-- **판단과 책임은 사람 몫.** AI를 루프에서 사람을 빼는 도구로 그리지 않는다
-- **정본은 하나가 아니다.** 구현 전 "무엇을 만들기로 했나"는 spec·plan, 구현 후 "지금 뭐가 도나"는 실제 소스코드
-- **단계는 건너뛸 수 있다.** 모든 작업에 여섯 단계를 다 돌리는 건 harness가 아니라 의식(儀式)
-
-용어의 정본은 1편 "부록: 용어 정리" 표다. 새 용어를 쓰면 거기에 추가한다.
 
 ## 검증
 
@@ -70,13 +44,33 @@ This file provides guidance to Claude Code/Codex when working with code in this 
 
 ```powershell
 # 공백·개행 오류
-git diff --check -- 'harness/'
+git diff --check -- 'courses/'
 
 # 깨진 상대 링크·이미지 경로만 출력
-Select-String -Path 'harness/*.md' -Pattern '\]\(([^)]+)\)' -AllMatches |
-  ForEach-Object { $_.Matches } | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique |
-  Where-Object { $_ -notmatch '^https?:' } |
-  Where-Object { -not (Test-Path (Join-Path 'harness' ($_ -replace '#.*$',''))) }
+Get-ChildItem -Path 'courses' -Filter '*.md' -Recurse | ForEach-Object {
+  $dir = $_.DirectoryName
+  Select-String -Path $_.FullName -Pattern '\]\(([^)]+)\)' -AllMatches |
+    ForEach-Object { $_.Matches } | ForEach-Object { $_.Groups[1].Value } |
+    Where-Object { $_ -notmatch '^https?:' } |
+    Where-Object { -not (Test-Path (Join-Path $dir ($_ -replace '#.*$',''))) } |
+    ForEach-Object { "BROKEN: $($_)" }
+}
+```
+
+zsh/bash (macOS)에서는 이렇게 한다.
+
+```bash
+# 공백·개행 오류
+git diff --check -- 'courses/'
+
+# 깨진 상대 링크·이미지 경로만 출력
+find courses -name '*.md' | while read -r f; do
+  d=$(dirname "$f")
+  grep -oE '\]\([^)]+\)' "$f" | sed 's/^](//; s/)$//' | grep -v '^https\?:' | sed 's/#.*$//' |
+  while read -r l; do
+    [ -n "$l" ] && [ ! -e "$d/$l" ] && echo "BROKEN: $f -> $l"
+  done
+done
 ```
 
 `rg`는 PowerShell PATH에 없다. 검색은 Grep 도구나 `Select-String`을 쓴다.
