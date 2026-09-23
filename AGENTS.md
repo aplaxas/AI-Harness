@@ -17,8 +17,18 @@ This file provides guidance to Claude Code/Codex when working with code in this 
 | [courses/ai-harness/](courses/ai-harness/) | 주니어 개발자 대상 AI Harness 강의. **끝난 강의로 동결** |
 | [courses/ai-for-work/](courses/ai-for-work/) | 사무직·소상공인 대상 강의. 준비 중 |
 | [docs/superpowers/](docs/superpowers/) | 전 강의의 spec/plan (작업 기록, 강의 자료 아님) |
+| [docs/memory/](docs/memory/) | 대화가 바뀌어도 이어갈 에이전트 메모리 |
 
 `docs/superpowers/`는 강의별로 나누지 않고 날짜순으로 쌓는다. 과거 문서에 나오는 옛 경로는 그때의 기록이므로 고치지 않는다.
+
+## 메모리
+
+다음 대화에서도 알아야 할 것(작업 환경, 저자의 선호, 받은 피드백)은 사용자 홈의 메모리 폴더가 아니라 **이 저장소의 `docs/memory/`**에 저장한다. 그래야 Claude Code와 Codex가 같은 기억을 쓰고, 다른 컴퓨터에서도 이어진다.
+
+- 작업을 시작하면 `docs/memory/MEMORY.md`를 먼저 읽는다. 이 파일은 자동으로 읽히지 않는다.
+- 기억 하나가 파일 하나다. 파일명은 주제를 드러내는 영문 kebab-case다(예: `user-remote-setup.md`).
+- `MEMORY.md`는 목록만 둔다. 한 줄에 `- [제목](파일.md) — 한 줄 설명` 하나씩 적는다.
+- 코드·원고·git 기록에서 알 수 있는 것은 적지 않는다. 틀린 기억은 고치거나 지운다.
 
 ## 글쓰기 원칙
 

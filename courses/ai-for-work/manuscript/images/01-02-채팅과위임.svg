@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 340" width="920" height="340" font-family="'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/>
+    </marker>
+  </defs>
+  <rect width="920" height="340" fill="#FFFFFF"/>
+  <text x="460" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#111827">같은 회의록 정리를 두 방식으로 할 때</text>
+
+  <text x="60" y="106" text-anchor="middle" font-size="16" font-weight="700" fill="#111827">채팅</text>
+
+  <rect x="130" y="60" width="170" height="80" rx="10" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="215" y="95" text-anchor="middle" font-size="15" fill="#1F2937">메모를 대화창에</text>
+  <text x="215" y="117" text-anchor="middle" font-size="15" fill="#1F2937">붙여 넣고 요청</text>
+
+  <rect x="330" y="60" width="170" height="80" rx="10" fill="#FFF1E0" stroke="#E08A1E" stroke-width="2"/>
+  <text x="415" y="95" text-anchor="middle" font-size="15" fill="#1F2937">정리한 회의록을</text>
+  <text x="415" y="117" text-anchor="middle" font-size="15" fill="#1F2937">대화창에 글로</text>
+
+  <rect x="530" y="60" width="170" height="80" rx="10" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="615" y="95" text-anchor="middle" font-size="15" fill="#1F2937">복사해서</text>
+  <text x="615" y="117" text-anchor="middle" font-size="15" fill="#1F2937">문서에 옮기기</text>
+
+  <rect x="730" y="60" width="170" height="80" rx="10" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="815" y="95" text-anchor="middle" font-size="15" fill="#1F2937">내용 확인하고</text>
+  <text x="815" y="117" text-anchor="middle" font-size="15" fill="#1F2937">고치기</text>
+
+  <line x1="300" y1="100" x2="328" y2="100" stroke="#4B5563" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="100" x2="528" y2="100" stroke="#4B5563" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="700" y1="100" x2="728" y2="100" stroke="#4B5563" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="20" y1="170" x2="900" y2="170" stroke="#D1D5DB" stroke-width="1"/>
+
+  <text x="60" y="236" text-anchor="middle" font-size="16" font-weight="700" fill="#111827">작업 위임</text>
+
+  <rect x="130" y="190" width="170" height="80" rx="10" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="215" y="225" text-anchor="middle" font-size="15" fill="#1F2937">목표·폴더·</text>
+  <text x="215" y="247" text-anchor="middle" font-size="15" fill="#1F2937">완료 기준 알려 주기</text>
+
+  <rect x="330" y="190" width="170" height="80" rx="10" fill="#FFF1E0" stroke="#E08A1E" stroke-width="2"/>
+  <text x="415" y="225" text-anchor="middle" font-size="15" fill="#1F2937">메모 파일을 읽고</text>
+  <text x="415" y="247" text-anchor="middle" font-size="15" fill="#1F2937">여러 단계 처리</text>
+
+  <rect x="530" y="190" width="170" height="80" rx="10" fill="#FFF1E0" stroke="#E08A1E" stroke-width="2"/>
+  <text x="615" y="225" text-anchor="middle" font-size="15" fill="#1F2937">회의록 파일을</text>
+  <text x="615" y="247" text-anchor="middle" font-size="15" fill="#1F2937">만들어 저장</text>
+
+  <rect x="730" y="190" width="170" height="80" rx="10" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="815" y="225" text-anchor="middle" font-size="15" fill="#1F2937">결과 파일과</text>
+  <text x="815" y="247" text-anchor="middle" font-size="15" fill="#1F2937">바뀐 파일 확인</text>
+
+  <line x1="300" y1="230" x2="328" y2="230" stroke="#4B5563" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="230" x2="528" y2="230" stroke="#4B5563" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="700" y1="230" x2="728" y2="230" stroke="#4B5563" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="320" y="302" width="16" height="16" rx="3" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="344" y="315" font-size="13" fill="#1F2937">내가 하는 일</text>
+  <rect x="470" y="302" width="16" height="16" rx="3" fill="#FFF1E0" stroke="#E08A1E" stroke-width="2"/>
+  <text x="494" y="315" font-size="13" fill="#1F2937">AI 도구가 하는 일</text>
+</svg>

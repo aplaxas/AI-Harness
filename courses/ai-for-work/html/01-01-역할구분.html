@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.1 AI가 할 일과 사람이 판단할 일 — AI와 일하는 법</title>
+<meta name="description" content="나는 AI를 업무에 쓰기 전에 일을 먼저 둘로 나눈다. AI에 맡길 일과 내가 판단할 일이다. 이 구분이 없으면 둘 중 하나가 된다. AI가 만든 결과를 그대로 내보내서 문제가 생기거나, 결과를 믿지 못해 처음부터 다시 하느라 시간이 더 든다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@400;600;700&family=Outfit:wght@300;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --paper: #ffffff;
+  --ink: #111111;
+  --muted: #666666;
+  --rule: #e2e2e2;
+  --red: #c8161d;
+  --red-deep: #8e1b1e;
+  --panel: #c8161d;
+  --panel-deep: #a3121a;
+  --panel-ink: #ffffff;
+  --th-bg: #f6f2f0;
+  --callout-border: #cfc5bc;
+  --fill-bg: #fff8e5;
+  --fill-border: #d99a1e;
+  --fill-ink: #7a4f00;
+  --ws-bg: #fffdf6;
+  --code-bg: #f2eee9;
+  --label-ink: #ffffff;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(60,20,20,.06);
+  --fs: 18px;
+  --serif: 'Noto Serif KR', 'AppleMyungjo', 'Batang', serif;
+  --sans: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --display: 'Outfit', 'Noto Sans KR', sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1e1e1e; --paper: #252526; --ink: #d4d4d4; --muted: #9d9d9d; --rule: #3c3c3c;
+    --red: #ef5a5f; --red-deep: #f28b8b; --panel: #9e1419; --panel-deep: #7c0f14;
+    --th-bg: #2d2d30; --callout-border: #4b4b4b; --fill-bg: #2b2415; --fill-border: #b9862a; --fill-ink: #f1c778;
+    --ws-bg: #2a2a2b; --code-bg: #2d2d30; --label-ink: #1e1e1e; --shadow: 0 1px 2px rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1e1e1e; --paper: #252526; --ink: #d4d4d4; --muted: #9d9d9d; --rule: #3c3c3c;
+  --red: #ef5a5f; --red-deep: #f28b8b; --panel: #9e1419; --panel-deep: #7c0f14;
+  --th-bg: #2d2d30; --callout-border: #4b4b4b; --fill-bg: #2b2415; --fill-border: #b9862a; --fill-ink: #f1c778;
+  --ws-bg: #2a2a2b; --code-bg: #2d2d30; --label-ink: #1e1e1e; --shadow: 0 1px 2px rgba(0,0,0,.3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--serif); font-size: var(--fs); line-height: 1.85;
+  word-break: keep-all; overflow-wrap: anywhere; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--red); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* toolbar */
+.toolbar {
+  position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 12px;
+  padding: 0 20px; height: 52px; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 14px;
+}
+.crumb { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+.crumb a { color: var(--muted); }
+.crumb-sep { margin: 0 8px; opacity: .6; }
+.tools { display: flex; gap: 4px; flex-shrink: 0; }
+.tools button {
+  font: 500 13px var(--sans); color: var(--ink); background: transparent; border: 1px solid transparent;
+  border-radius: 8px; padding: 6px 10px; cursor: pointer; white-space: nowrap;
+}
+.tools button:hover { background: var(--paper); border-color: var(--rule); }
+.tools button[aria-pressed="true"] { color: var(--red); border-color: var(--red); }
+.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; }
+.progress span { display: block; height: 100%; width: 0; background: var(--red); transition: width .1s linear; }
+[data-kind="index"] .only-section, [data-kind="title"] .only-section { display: none; }
+
+/* opener */
+.opener {
+  max-width: 1180px; margin: 48px auto 0; padding: 0 24px;
+  display: grid; grid-template-columns: 220px minmax(0, 740px); gap: 56px; justify-content: center;
+}
+.opener .chapter-head { grid-column: 2; }
+.opener.no-toc { grid-template-columns: minmax(0, 740px); }
+.opener.no-toc .chapter-head { grid-column: 1; }
+.part-label { font: 300 44px/1.1 var(--display); letter-spacing: .02em; }
+
+.chapter-head { min-width: 0; }
+.chapter-kicker { font: 500 15px var(--display); color: var(--red-deep); letter-spacing: .04em; }
+.chapter-line { display: flex; align-items: center; gap: 20px; margin-top: 2px; }
+.chapter-num { font: 800 96px/0.9 var(--sans); color: var(--red-deep); letter-spacing: -.03em; }
+.chapter-title { font: 700 30px/1.3 var(--sans); color: var(--red-deep); }
+.section-title { font: 800 30px/1.35 var(--sans); margin: 40px 0 22px; color: var(--ink); }
+.section-num { color: var(--red); margin-right: 6px; }
+.section-title, .chapter-title, .content h2, .content h3 { text-wrap: balance; }
+.lead p { margin: 0 0 1em; }
+.keywords { margin-top: 30px; }
+
+/* title page: part cover */
+.cover-wrap { display: flex; justify-content: center; padding: 48px 24px 0; }
+.part-panel {
+  width: min(420px, 100%); aspect-ratio: 380 / 562;
+  background: linear-gradient(170deg, var(--panel) 0%, var(--panel-deep) 100%); color: var(--panel-ink);
+  padding: 44px 34px 34px; display: flex; flex-direction: column; text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08), 0 18px 40px rgba(120,10,15,.22);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.part-panel .part-label { font-size: 46px; }
+.part-title { font: 800 32px/1.35 var(--sans); margin-top: 24px; }
+.part-sub { font: 500 16px/1.5 var(--sans); margin-top: 10px; opacity: .85; }
+.panel-sections {
+  list-style: none; margin: auto 0 0; padding: 20px 0 0; text-align: left;
+  border-top: 1px solid rgba(255,255,255,.4); font: 700 15px/1.5 var(--sans);
+}
+.panel-sections li { padding: 7px 0; opacity: .75; }
+.panel-sections li a { color: inherit; }
+.panel-sections li a:hover { text-decoration: underline; }
+.panel-sections li.current { opacity: 1; font-weight: 800; }
+.panel-sections li.current::before { content: "▸ "; font-size: .8em; }
+.panel-sections li.todo { opacity: .45; }
+.box-title {
+  font: 700 16px var(--sans); margin: 0 0 12px; padding: 0 0 8px 12px; position: relative;
+  border-bottom: 1.5px solid var(--ink);
+}
+.box-title::before { content: ""; position: absolute; left: 0; top: 3px; width: 3px; height: 16px; background: var(--red); }
+.keywords ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.keywords li {
+  font: 500 14px var(--sans); padding: 4px 12px; border-radius: 999px;
+  background: var(--paper); border: 1px solid var(--rule);
+}
+
+/* body */
+.layout {
+  max-width: 1180px; margin: 64px auto 0; padding: 0 24px;
+  display: grid; grid-template-columns: 220px minmax(0, 740px); gap: 56px; justify-content: center;
+}
+.layout.no-toc { grid-template-columns: minmax(0, 740px); }
+.toc { position: sticky; top: 80px; align-self: start; font: 400 14px/1.5 var(--sans); max-height: calc(100vh - 100px); overflow: auto; }
+.toc-title { font-weight: 700; color: var(--muted); font-size: 12px; letter-spacing: .08em; margin-bottom: 10px; }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--rule); }
+.toc li a { display: block; padding: 6px 12px; color: var(--muted); border-left: 2px solid transparent; margin-left: -1px; }
+.toc li.lv3 a { padding-left: 26px; font-size: 13px; }
+.toc li a:hover { color: var(--ink); text-decoration: none; }
+.toc li a.active { color: var(--red); border-left-color: var(--red); font-weight: 700; }
+
+.content h2 { font: 800 23px/1.4 var(--sans); color: var(--red-deep); margin: 2.4em 0 .8em; scroll-margin-top: 76px; }
+.content h2:first-child { margin-top: 0; }
+.content h3 { font: 700 19px/1.45 var(--sans); margin: 1.8em 0 .6em; scroll-margin-top: 76px; }
+.content h4, .content h5, .content h6 { font: 700 17px var(--sans); margin: 1.4em 0 .5em; }
+.content p { margin: 0 0 1.1em; }
+.content ul, .content ol { padding-left: 1.3em; margin: 0 0 1.2em; }
+.content li { margin: .3em 0; }
+.content li::marker { color: var(--red); font-family: var(--sans); font-weight: 700; }
+.content strong { font-weight: 700; }
+.content li:has(> input[type="checkbox"]) { list-style: none; margin-left: -1.3em; }
+.content code { font: .88em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+.content pre { background: var(--code-bg); padding: 16px 18px; border-radius: 8px; overflow: auto; line-height: 1.6; }
+.content pre code { background: none; padding: 0; }
+.content hr { border: 0; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+.content blockquote { margin: 1.4em 0; padding: 2px 0 2px 18px; border-left: 4px solid var(--rule); color: var(--muted); }
+.content .inline-img { max-width: 100%; vertical-align: middle; }
+
+p.interp { border-left: 3px solid var(--red); padding-left: 16px; }
+p.interp::before {
+  content: "내 해석"; display: block; font: 700 12px var(--sans); color: var(--red);
+  letter-spacing: .06em; margin-bottom: 2px;
+}
+
+/* tables */
+.table-wrap { overflow-x: auto; margin: 1.6em 0; }
+table { width: 100%; border-collapse: collapse; font: 400 15px/1.6 var(--sans); }
+th { text-align: left; background: var(--th-bg); border-top: 2px solid var(--red-deep); font-weight: 700; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.worksheet { margin: 1.6em 0; border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px 4px; background: var(--paper); }
+.worksheet .table-wrap { margin: 8px 0; }
+.ws-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; font: 400 13px var(--sans); color: var(--muted); }
+.ws-bar button { font: 500 12px var(--sans); color: var(--muted); background: none; border: 1px solid var(--rule); border-radius: 6px; padding: 3px 10px; cursor: pointer; }
+.ws-bar button:hover { color: var(--red); border-color: var(--red); }
+td.ws-cell { background: var(--ws-bg); height: 2.6em; outline: none; cursor: text; box-shadow: inset 0 0 0 1px transparent; }
+td.ws-cell:focus { box-shadow: inset 0 0 0 2px var(--red); }
+td.ws-cell:empty::before { content: "…"; color: var(--rule); }
+
+/* figures */
+.fig { margin: 2em 0; }
+.fig-zoom {
+  display: block; width: 100%; padding: 16px; background: #fff; border: 1px solid var(--rule);
+  border-radius: 10px; cursor: zoom-in; box-shadow: var(--shadow);
+}
+.fig-zoom img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.fig figcaption { font: 400 14px/1.5 var(--sans); color: var(--muted); text-align: center; margin-top: 10px; }
+.fig-num { font-weight: 700; color: var(--red-deep); margin-right: 4px; }
+
+/* callouts */
+.callout, .fill {
+  margin: 1.8em 0; padding: 16px 20px 6px; border-radius: 12px; font-size: .94em;
+  border: 1.5px solid var(--callout-border); background: var(--paper);
+}
+.callout-label {
+  display: inline-block; font: 800 12.5px/1 var(--sans); letter-spacing: .04em; color: var(--label-ink);
+  background: var(--red-deep); padding: 5px 9px; border-radius: 4px; margin-bottom: 10px;
+}
+.callout-tip .callout-label { background: var(--red); }
+.callout-ask .callout-label { background: var(--ink); color: var(--bg); }
+.callout-warn { border-color: var(--red); }
+.callout-warn .callout-label { background: var(--red); }
+.fill { border-style: dashed; border-color: var(--fill-border); background: var(--fill-bg); color: var(--fill-ink); }
+.fill .callout-label { background: var(--fill-border); }
+.hide-notes .fill { display: none; }
+
+/* pager & footer */
+.pager { max-width: 900px; margin: 72px auto 0; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pager-card {
+  display: flex; flex-direction: column; gap: 4px; padding: 16px 20px; border: 1px solid var(--rule);
+  border-radius: 12px; background: var(--paper); font-family: var(--sans); color: var(--ink);
+}
+.pager-card.next { text-align: right; }
+a.pager-card:hover { border-color: var(--red); text-decoration: none; }
+.pager-card.disabled { opacity: .55; }
+.pager-dir { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.pager-title { font-weight: 700; font-size: 16px; }
+.page-foot { text-align: center; font: 400 13px var(--sans); color: var(--muted); padding: 48px 24px 56px; }
+.page-foot .sep { margin: 0 12px; }
+
+/* lightbox */
+.lightbox { position: fixed; inset: 0; z-index: 50; background: rgba(10,8,8,.82); display: grid; place-items: center; padding: 24px; cursor: zoom-out; }
+.lightbox[hidden] { display: none; }
+.lightbox img { max-width: 96vw; max-height: 90vh; background: #fff; padding: 16px; border-radius: 8px; }
+
+/* index page */
+.book-hero { max-width: 1180px; margin: 48px auto 40px; padding: 0 24px; }
+.book-hero .kicker { font: 500 15px var(--display); color: var(--red-deep); letter-spacing: .08em; }
+.book-hero h1 { font: 800 46px/1.2 var(--sans); color: var(--red-deep); margin: 6px 0 18px; }
+.book-progress { display: flex; align-items: center; gap: 14px; font: 500 14px var(--sans); color: var(--muted); }
+.book-progress-bar { width: 220px; height: 6px; background: var(--rule); border-radius: 99px; overflow: hidden; }
+.book-progress-bar span { display: block; height: 100%; background: var(--red); }
+.book-toc { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+.toc-part { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 40px; margin-bottom: 56px; }
+.toc-part-panel {
+  background: linear-gradient(170deg, var(--panel) 0%, var(--panel-deep) 100%); color: var(--panel-ink);
+  padding: 28px; align-self: start; position: sticky; top: 76px;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.toc-part-panel .part-label { font-size: 30px; }
+.toc-part-panel h2 { font: 800 24px/1.35 var(--sans); margin: 14px 0 6px; }
+.toc-part-panel p { font: 500 14px var(--sans); margin: 0; opacity: .85; }
+.toc-chapter { margin-bottom: 26px; }
+.toc-chapter h3 { font: 700 20px/1.4 var(--sans); color: var(--red-deep); margin: 0 0 8px; }
+.toc-ch-num { font-weight: 800; font-size: 26px; margin-right: 12px; }
+.toc-chapter ol { list-style: none; margin: 0; padding: 0; font: 400 15.5px/1.5 var(--sans); }
+.toc-chapter li { padding: 8px 0; border-bottom: 1px dotted var(--rule); display: flex; align-items: baseline; gap: 10px; }
+.toc-chapter li a { color: var(--ink); display: flex; gap: 10px; flex: 1; }
+.toc-chapter li a:hover { color: var(--red); text-decoration: none; }
+.sec-num { color: var(--red); font-weight: 700; min-width: 3em; }
+.toc-chapter li.todo { color: var(--muted); }
+.toc-chapter li.todo .sec-num { color: var(--muted); }
+.toc-chapter li em { margin-left: auto; font: 500 12px var(--sans); font-style: normal; border: 1px solid var(--rule); border-radius: 99px; padding: 1px 8px; white-space: nowrap; }
+
+/* responsive */
+@media (max-width: 1000px) {
+  .layout, .opener { grid-template-columns: minmax(0, 740px); }
+  .opener .chapter-head { grid-column: 1; }
+  .toc {
+    position: fixed; top: 52px; right: 0; bottom: 0; width: min(300px, 86vw); max-height: none; z-index: 30;
+    background: var(--paper); border-left: 1px solid var(--rule); padding: 20px; transform: translateX(100%);
+    transition: transform .2s ease; box-shadow: var(--shadow);
+  }
+  .toc-open .toc { transform: none; }
+}
+@media (min-width: 1001px) { .toc-toggle { display: none; } }
+@media (max-width: 860px) {
+  .opener { margin-top: 28px; }
+  .chapter-num { font-size: 72px; }
+  .chapter-title { font-size: 24px; }
+  .section-title { font-size: 25px; margin-top: 24px; }
+  .toc-part { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .toc-part-panel { position: static; }
+  .book-hero h1 { font-size: 34px; }
+}
+@media (max-width: 560px) {
+  :root { --fs: 17px; }
+  .toolbar { padding: 0 12px; gap: 6px; }
+  .tools button { padding: 6px 7px; }
+  .opener, .layout, .pager, .book-hero, .book-toc { padding: 0 16px; }
+  .pager { grid-template-columns: 1fr; }
+  .pager-card.next { text-align: left; }
+}
+
+/* print */
+@page { margin: 18mm 16mm; }
+@media print {
+  :root { --fs: 11pt; }
+  body { background: #fff; }
+  .toolbar, .toc, .pager, .lightbox, .ws-bar button { display: none !important; }
+  .layout { display: block; margin-top: 32px; }
+  .opener { display: block; }
+  .content h2 { break-after: avoid; }
+  .fig, .callout, .fill, table { break-inside: avoid; }
+  .fig-zoom { box-shadow: none; }
+}
+</style>
+</head>
+<body data-kind="section" data-page="01-01-역할구분">
+<div class="toolbar">
+  <div class="crumb"><a href="index.html">목차</a><span class="crumb-sep">›</span>Part 01<span class="crumb-sep">›</span>1장 AI로 무엇부터 해볼까</div>
+  <div class="tools">
+    <button type="button" class="toc-toggle only-section" data-act="toc">목차</button>
+    <button type="button" data-act="smaller" aria-label="글자 작게">가−</button>
+    <button type="button" data-act="bigger" aria-label="글자 크게">가+</button>
+    <button type="button" class="only-section" data-act="notes" aria-pressed="false" title="✍️ 채우기 상자 숨기기">집필 메모 숨김</button>
+    <button type="button" data-act="theme">어둡게</button>
+    <button type="button" data-act="print">인쇄</button>
+  </div>
+  <div class="progress"><span></span></div>
+</div>
+<header class="opener"><div class="chapter-head"><div class="chapter-kicker">Chapter</div><div class="chapter-line"><span class="chapter-num">01</span><span class="chapter-title">AI로 무엇부터 해볼까</span></div><h1 class="section-title"><span class="section-num">1.1</span> AI가 할 일과 사람이 판단할 일</h1><div class="lead"><p>나는 AI를 업무에 쓰기 전에 일을 먼저 둘로 나눈다. AI에 맡길 일과 내가 판단할 일이다. 이 구분이 없으면 둘 중 하나가 된다. AI가 만든 결과를 그대로 내보내서 문제가 생기거나, 결과를 믿지 못해 처음부터 다시 하느라 시간이 더 든다.</p></div><section class="keywords"><h2 class="box-title">핵심 키워드</h2><ul><li>생성형 AI</li><li>초안</li></ul></section></div></header>
+<div class="layout"><nav class="toc" aria-label="이 절의 구성"><div class="toc-title">이 절의 구성</div><ol><li class="lv2"><a href="#이-책에서-말하는-ai">이 책에서 말하는 AI</a></li><li class="lv2"><a href="#ai에-맡기는-일">AI에 맡기는 일</a></li><li class="lv2"><a href="#내가-판단하는-일">내가 판단하는 일</a></li><li class="lv2"><a href="#애매할-때-묻는-세-가지">애매할 때 묻는 세 가지</a></li><li class="lv2"><a href="#업무-하나를-나누면">업무 하나를 나누면</a></li><li class="lv2"><a href="#해-보기">해 보기</a></li></ol></nav><article class="content">
+<h2 id="이-책에서-말하는-ai">이 책에서 말하는 AI</h2>
+<p>이 책에서 AI는 ChatGPT, Claude, Gemini처럼 글로 요청하면 글·표·이미지 같은 결과를 만들어 주는 도구를 말한다. 이런 도구를 <strong>생성형 AI</strong>라고 부른다. 이미 있는 자료를 찾아 주는 검색과 달리, 요청에 맞춰 새 결과를 만든다는 뜻이다.</p>
+<p>생성형 AI가 만든 결과는 대개 그럴듯하다. 문장이 매끄럽고 형식도 갖춰져 있다. 하지만 그럴듯한 것과 맞는 것은 다르다. 사실과 다른 내용이 자연스러운 문장 속에 섞여 나올 수 있다. 같은 요청을 다시 해도 결과가 조금씩 다르게 나올 수 있다.</p>
+<p>그래서 나는 AI의 결과를 <strong>초안</strong>으로 다룬다. 초안은 확인하고 고친 뒤에 쓰는 첫 번째 버전이다. 초안을 만드는 일은 맡기고, 초안을 쓸지 말지는 내가 정한다.</p>
+<h2 id="ai에-맡기는-일">AI에 맡기는 일</h2>
+<p>나는 이런 일을 AI에 맡긴다.</p>
+<ul>
+<li><strong>첫 초안 쓰기</strong>: 답장, 공지문, 보고서처럼 빈 화면에서 시작해야 하는 글</li>
+<li><strong>정리하기</strong>: 흩어진 메모를 항목별로 묶기, 긴 글을 짧게 줄이기</li>
+<li><strong>형식 바꾸기</strong>: 글을 표로, 딱딱한 말투를 부드러운 말투로, 긴 문서를 한 장짜리로</li>
+<li><strong>후보 늘어놓기</strong>: 제목 후보, 확인할 질문 목록, 빠뜨린 항목</li>
+</ul>
+<p>이 일들에는 공통점이 있다. 결과가 맞는지 내가 보고 판단할 수 있다. 틀려도 밖으로 내보내기 전에 고치면 된다.</p>
+<h2 id="내가-판단하는-일">내가 판단하는 일</h2>
+<p>반대로 이런 일은 내가 한다.</p>
+<ul>
+<li><strong>사실 확인</strong>: 날짜, 금액, 이름, 수량, 규정이 맞는지</li>
+<li><strong>약속</strong>: 환불, 일정, 가격처럼 상대가 믿고 움직일 내용</li>
+<li><strong>결정</strong>: 여러 안 중 무엇을 고를지, 누구에게 보낼지</li>
+<li><strong>내보내기</strong>: 발송, 제출, 공개</li>
+</ul>
+<p>이 일들의 공통점은 틀렸을 때 책임이 나에게 있다는 것이다. AI 도구는 그 결과를 책임지지 않는다. 고객에게 잘못 안내한 환불 조건은 AI가 쓴 문장이어도 내가 보낸 약속이다.</p>
+<h2 id="애매할-때-묻는-세-가지">애매할 때 묻는 세 가지</h2>
+<p>모든 일이 깔끔하게 나뉘지는 않는다. 애매할 때 나는 세 가지를 묻는다.</p>
+<ol>
+<li><strong>결과가 맞는지 내가 확인할 수 있는가?</strong> 확인할 방법이 없으면 맡기지 않는다. 맡기더라도 확인할 방법부터 정한다.</li>
+<li><strong>틀렸을 때 되돌릴 수 있는가?</strong> 초안은 지우면 된다. 이미 보낸 메일은 되돌릴 수 없다.</li>
+<li><strong>틀렸을 때 누가 책임지는가?</strong> 책임이 나에게 있으면 마지막 판단도 내가 한다.</li>
+</ol>
+<p>확인할 수 있고, 되돌릴 수 있고, 틀려도 부담이 작다면 AI에 맡기고 결과만 확인한다. 하나라도 걸리면 그 부분은 내가 직접 판단한다.</p>
+<h2 id="업무-하나를-나누면">업무 하나를 나누면</h2>
+<p>대부분의 업무는 통째로 맡기거나 통째로 내가 하는 게 아니다. 한 업무 안에서 단계별로 나뉜다.</p>
+<figure class="fig"><button type="button" class="fig-zoom" aria-label="업무 한 건에서 AI와 사람이 맡는 부분 크게 보기"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4NjAgMjkwIiB3aWR0aD0iODYwIiBoZWlnaHQ9IjI5MCIgZm9udC1mYW1pbHk9IidBcHBsZSBTRCBHb3RoaWMgTmVvJywnTWFsZ3VuIEdvdGhpYycsJ05vdG8gU2FucyBLUicsc2Fucy1zZXJpZiI+CiAgPGRlZnM+CiAgICA8bWFya2VyIGlkPSJhcnJvdyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI5IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxwYXRoIGQ9Ik0wLDAgTDEwLDUgTDAsMTAgeiIgZmlsbD0iIzRCNTU2MyIvPgogICAgPC9tYXJrZXI+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI4NjAiIGhlaWdodD0iMjkwIiBmaWxsPSIjRkZGRkZGIi8+CiAgPHRleHQgeD0iNDMwIiB5PSIzNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzExMTgyNyI+7JeF66y0IO2VnCDqsbTsl5DshJwgQUnsmYAg7IKs656M7J20IOunoeuKlCDrtoDrtoQ8L3RleHQ+CgogIDxyZWN0IHg9IjMwIiB5PSI3MCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI5MCIgcng9IjEwIiBmaWxsPSIjRThGMEZFIiBzdHJva2U9IiMzQjZGRDgiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjExNSIgeT0iMTA4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMUYyOTM3Ij7rqqnsoIHCt+yekOujjCDsoJXtlZjquLA8L3RleHQ+CiAgPHRleHQgeD0iMTE1IiB5PSIxMzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMzQjZGRDgiPuyCrOuejDwvdGV4dD4KCiAgPHJlY3QgeD0iMjQwIiB5PSI3MCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI5MCIgcng9IjEwIiBmaWxsPSIjRkZGMUUwIiBzdHJva2U9IiNFMDhBMUUiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjMyNSIgeT0iMTA4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMUYyOTM3Ij7stIjslYgg66eM65Ok6riwPC90ZXh0PgogIDx0ZXh0IHg9IjMyNSIgeT0iMTM0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEzIiBmaWxsPSIjQjg2QTBDIj5BSTwvdGV4dD4KCiAgPHJlY3QgeD0iNDUwIiB5PSI3MCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI5MCIgcng9IjEwIiBmaWxsPSIjRThGMEZFIiBzdHJva2U9IiMzQjZGRDgiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjUzNSIgeT0iMTA4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMUYyOTM3Ij7sgqzsi6Qg7ZmV7J24wrfqsrDsoJU8L3RleHQ+CiAgPHRleHQgeD0iNTM1IiB5PSIxMzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMzQjZGRDgiPuyCrOuejDwvdGV4dD4KCiAgPHJlY3QgeD0iNjYwIiB5PSI3MCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI5MCIgcng9IjEwIiBmaWxsPSIjRThGMEZFIiBzdHJva2U9IiMzQjZGRDgiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9Ijc0NSIgeT0iMTA4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMUYyOTM3Ij7rs7TrgrTquLDCt+ygnOy2nO2VmOq4sDwvdGV4dD4KICA8dGV4dCB4PSI3NDUiIHk9IjEzNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzNCNkZEOCI+7IKs656MPC90ZXh0PgoKICA8bGluZSB4MT0iMjAwIiB5MT0iMTE1IiB4Mj0iMjM4IiB5Mj0iMTE1IiBzdHJva2U9IiM0QjU1NjMiIHN0cm9rZS13aWR0aD0iMiIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz4KICA8bGluZSB4MT0iNDEwIiB5MT0iMTE1IiB4Mj0iNDQ4IiB5Mj0iMTE1IiBzdHJva2U9IiM0QjU1NjMiIHN0cm9rZS13aWR0aD0iMiIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz4KICA8bGluZSB4MT0iNjIwIiB5MT0iMTE1IiB4Mj0iNjU4IiB5Mj0iMTE1IiBzdHJva2U9IiM0QjU1NjMiIHN0cm9rZS13aWR0aD0iMiIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz4KCiAgPHBhdGggZD0iTTUzNSwxNjAgQzUzNSwyMTUgMzI1LDIxNSAzMjUsMTY0IiBmaWxsPSJub25lIiBzdHJva2U9IiM0QjU1NjMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iNiA0IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPgogIDx0ZXh0IHg9IjQzMCIgeT0iMjI2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNEI1NTYzIj7qs6DsuaAg7KCQ7J2EIOyVjOugpCDso7zqs6Ag64uk7IucIOyalOyyrTwvdGV4dD4KCiAgPHJlY3QgeD0iMjkwIiB5PSIyNTIiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgcng9IjMiIGZpbGw9IiNFOEYwRkUiIHN0cm9rZT0iIzNCNkZEOCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iMzE0IiB5PSIyNjUiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxRjI5MzciPuyCrOuejOydtCDtjJDri6jtlZjripQg7J28PC90ZXh0PgogIDxyZWN0IHg9IjQ2MCIgeT0iMjUyIiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjRkZGMUUwIiBzdHJva2U9IiNFMDhBMUUiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjQ4NCIgeT0iMjY1IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMUYyOTM3Ij5BSeyXkCDrp6HquLDripQg7J28PC90ZXh0Pgo8L3N2Zz4K" alt="업무 한 건에서 AI와 사람이 맡는 부분" loading="lazy"></button><figcaption><span class="fig-num">그림 1.1-1</span> 업무 한 건에서 AI와 사람이 맡는 부분</figcaption></figure>
+<p>앞과 뒤는 사람이 맡는다. 무엇을 위해 어떤 자료로 할지 정하는 일, 그리고 결과를 확인하고 내보내는 일이다. 가운데 초안 만들기를 AI에 맡긴다. 초안이 마음에 들지 않으면 고칠 점을 알려 주고 다시 요청한다. 이 반복은 여러 번 해도 된다. 다만 몇 번을 반복했든 확인과 결정은 건너뛰지 않는다.</p>
+<p>아래 표는 흔한 업무를 이 기준으로 나눠 본 예시다. 내가 실제로 해 본 기록이 아니라 설명을 위한 예시다.</p>
+<div class="table-wrap"><table><thead><tr><th>업무</th><th>AI에 맡기는 부분</th><th>내가 판단하는 부분</th></tr></thead><tbody>
+<tr><td>고객 문의 답장</td><td>정중한 문장 초안, 말투 다듬기</td><td>환불·교환 가능 여부, 약속할 날짜, 발송</td></tr>
+<tr><td>회의록</td><td>메모를 결정 사항과 할 일로 정리</td><td>정말 결정된 것인지, 담당자와 기한</td></tr>
+<tr><td>행사 안내문</td><td>문구와 구성 초안</td><td>날짜·장소·가격, 공개 시점</td></tr>
+<tr><td>월말 매출 정리</td><td>표 형식, 요약 문장</td><td>숫자가 원본과 맞는지</td></tr>
+</tbody></table></div>
+<p>AI에 어떤 자료를 넣으면 안 되는지, 결과를 어떻게 확인하는지는 3장에서 자세히 다룬다.</p>
+<aside class="fill"><div class="callout-label">✍️ 채우기</div><p>내 업무 하나를 이 기준으로 나눠 본 실제 사례. 무엇을 맡겼고 무엇을 내가 판단했는지, 나누기 전과 뒤에 무엇이 달라졌는지 적는다.</p></aside>
+<h2 id="해-보기">해 보기</h2>
+<p>내가 자주 하는 업무 세 가지를 적는다. 업무마다 위 표처럼 AI에 맡길 부분과 내가 판단할 부분을 나눠 본다. 이 목록은 1.3에서 첫 실습거리를 고를 때 다시 쓴다.</p>
+<div class="worksheet" data-table="1"><div class="ws-bar"><span>빈칸에 직접 적어 보세요. 적은 내용은 이 브라우저에만 저장됩니다.</span><button type="button" class="ws-clear">지우기</button></div><div class="table-wrap"><table><thead><tr><th>내 업무</th><th>AI에 맡길 부분</th><th>내가 판단할 부분</th></tr></thead><tbody>
+<tr><td class="ws-cell" contenteditable="true" data-cell="1-0-0"></td><td class="ws-cell" contenteditable="true" data-cell="1-0-1"></td><td class="ws-cell" contenteditable="true" data-cell="1-0-2"></td></tr>
+<tr><td class="ws-cell" contenteditable="true" data-cell="1-1-0"></td><td class="ws-cell" contenteditable="true" data-cell="1-1-1"></td><td class="ws-cell" contenteditable="true" data-cell="1-1-2"></td></tr>
+<tr><td class="ws-cell" contenteditable="true" data-cell="1-2-0"></td><td class="ws-cell" contenteditable="true" data-cell="1-2-1"></td><td class="ws-cell" contenteditable="true" data-cell="1-2-2"></td></tr>
+</tbody></table></div></div>
+</article></div>
+<nav class="pager" aria-label="이전 다음"><a class="pager-card prev" href="01-01-Title.html"><span class="pager-dir">이 절의 시작</span><span class="pager-title">1.1 AI가 할 일과 사람이 판단할 일</span></a><a class="pager-card next" href="01-02-Title.html"><span class="pager-dir">다음</span><span class="pager-title">1.2 채팅과 작업 위임의 차이</span></a></nav>
+<footer class="page-foot">01 AI로 무엇부터 해볼까<span class="sep">·</span>Part 01 처음 쓰는 AI</footer>
+<div class="lightbox" hidden><img alt=""></div>
+<script>
+(() => {
+  const root = document.documentElement;
+  const page = document.body.dataset.page;
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+  };
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  const btn = (act) => $(`[data-act="${act}"]`);
+
+  const isDark = () => (root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+  const syncTheme = () => { btn('theme').textContent = isDark() ? '밝게' : '어둡게'; };
+  const savedTheme = store.get('mh:theme');
+  if (savedTheme) root.dataset.theme = savedTheme;
+  syncTheme();
+  btn('theme').addEventListener('click', () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    store.set('mh:theme', root.dataset.theme);
+    syncTheme();
+  });
+
+  let fs = Number(store.get('mh:fs')) || 0;
+  const applyFs = () => { if (fs) root.style.setProperty('--fs', fs + 'px'); };
+  applyFs();
+  const stepFs = (d) => {
+    const cur = fs || parseFloat(getComputedStyle(root).getPropertyValue('--fs')) || 18;
+    fs = Math.min(24, Math.max(14, cur + d));
+    applyFs();
+    store.set('mh:fs', String(fs));
+  };
+  btn('smaller').addEventListener('click', () => stepFs(-1));
+  btn('bigger').addEventListener('click', () => stepFs(1));
+
+  const notes = btn('notes');
+  const setNotes = (hide) => {
+    document.body.classList.toggle('hide-notes', hide);
+    notes.setAttribute('aria-pressed', String(hide));
+    store.set('mh:hideNotes', hide ? '1' : '0');
+  };
+  setNotes(store.get('mh:hideNotes') === '1');
+  notes.addEventListener('click', () => setNotes(!document.body.classList.contains('hide-notes')));
+
+  btn('print').addEventListener('click', () => window.print());
+  btn('toc').addEventListener('click', () => document.body.classList.toggle('toc-open'));
+  $$('.toc a').forEach((a) => a.addEventListener('click', () => document.body.classList.remove('toc-open')));
+
+  const bar = $('.progress span');
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const links = new Map($$('.toc a').map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+  if (links.size && 'IntersectionObserver' in window) {
+    const visible = new Set();
+    const heads = $$('.content h2[id], .content h3[id]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+      let current = null;
+      for (const h of heads) {
+        if (h.getBoundingClientRect().top < innerHeight * 0.35) current = h; else break;
+      }
+      if (!current && visible.size) current = heads.find((h) => visible.has(h));
+      links.forEach((a) => a.classList.remove('active'));
+      if (current && links.get(current.id)) links.get(current.id).classList.add('active');
+    }, { rootMargin: '-60px 0px -55% 0px', threshold: [0, 1] });
+    heads.forEach((h) => io.observe(h));
+  }
+
+  const box = $('.lightbox');
+  const boxImg = $('img', box);
+  $$('.fig-zoom').forEach((b) => b.addEventListener('click', () => {
+    const img = $('img', b);
+    boxImg.src = img.src;
+    boxImg.alt = img.alt;
+    box.hidden = false;
+  }));
+  box.addEventListener('click', () => { box.hidden = true; });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') { box.hidden = true; document.body.classList.remove('toc-open'); } });
+
+  const wsKey = 'mh:ws:' + page;
+  let ws = {};
+  try { ws = JSON.parse(store.get(wsKey) || '{}') || {}; } catch (e) { ws = {}; }
+  $$('.ws-cell').forEach((td) => {
+    if (ws[td.dataset.cell]) td.textContent = ws[td.dataset.cell];
+    td.addEventListener('input', () => {
+      const v = td.textContent.trim();
+      if (v) ws[td.dataset.cell] = v; else { delete ws[td.dataset.cell]; td.textContent = ''; }
+      store.set(wsKey, JSON.stringify(ws));
+    });
+  });
+  $$('.worksheet').forEach((w) => $('.ws-clear', w).addEventListener('click', () => {
+    $$('.ws-cell', w).forEach((td) => { td.textContent = ''; delete ws[td.dataset.cell]; });
+    Object.keys(ws).length ? store.set(wsKey, JSON.stringify(ws)) : store.del(wsKey);
+  }));
+})();
+</script>
+</body>
+</html>
