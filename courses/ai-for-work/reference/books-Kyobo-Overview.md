@@ -47,6 +47,7 @@ No와 책이름·링크·출판사는 [교보문고 원자료](books-Kyobo.md)�
 | 39 | [AI 에이전트](https://psk.dkyobobook.co.kr/content/contentView.ink?brcd=480N260660120) | 작가와 | 확장·자동화 | C12 에이전트 이해와 업무 위임<br>보조: C03, C17 | 에이전트의 개념·구조·도구 사용과 여러 에이전트의 역할 분담을 설명한다. 산업·일자리 변화, 개인정보와 책임 문제 및 개인·조직의 준비 방향을 폭넓게 다룬다. |
 | 40 | [클로드 올인원 with 코워크, 코드, 디자인](https://psk.dkyobobook.co.kr/content/contentView.ink?brcd=4801175790682) | 한빛미디어 | 작업 환경·도구 | C10 Cowork 사용<br>보조: C13, C14, C16 | 업무에 맞게 채팅·Cowork·코드·디자인을 선택해 문서와 자료를 처리하는 실습서다. 스킬·외부 연결·예약 작업으로 반복을 줄이고 작은 업무 도구와 대시보드 제작까지 이어진다. |
 | 41 | [바로바로 클로드 with 코워크, 스킬, 클로드 코드, 디자인](https://psk.dkyobobook.co.kr/content/contentView.ink?brcd=4801124516134) | 골든래빗(주) | 작업 환경·도구 | C10 Cowork 사용<br>보조: C13, C11, C08 | 클로드의 기본 대화와 문서 작업에서 외부 도구 연결, 스킬 제작과 Cowork 파일 작업으로 확장한다. Claude Code를 활용한 웹 도구 제작과 브랜드 시각 자료 디자인도 다룬다. |
+| 42 | [클로드 에이전트 협업의 기술](https://psk.dkyobobook.co.kr/content/contentView.ink?brcd=4801175790811) | 한빛미디어 | 확장·자동화 | C12 에이전트 이해와 업무 위임<br>보조: C10, C11, C14 | Cowork의 커넥터·스킬·플러그인·예약 작업으로 첫 에이전트 작업을 구성한 뒤 Claude Code의 지침 파일·커스텀 명령어·MCP로 확장한다. 서브 에이전트와 여러 에이전트의 역할 설계, 품질·비용 관리와 문제 해결까지 다룬다. |
 
 ## 집필 목차의 장별 연결표
 
@@ -54,7 +55,7 @@ No와 책이름·링크·출판사는 [교보문고 원자료](books-Kyobo.md)�
 
 `*`가 붙은 장·절은 2차 연결이다. **여기서부터는 내 해석이다.** 원자료의 목차 제목만 보고 내 책의 절 주제를 직접 다룰 것으로 추론해 이어 붙였다. 1차 연결보다 근거가 약하므로, 본문을 읽고 맞으면 집필 목차의 절 표에 옮겨 1차 연결로 바꾸고 아니면 지운다. 장은 그 장의 모든 연결이 2차일 때만 장 이름에 `*`를 붙인다. 근거로 삼은 목차는 아래 [2차 연결 근거](#2차-연결-근거)에 있다.
 
-41권 중 1차 연결은 21권이고, 2차 연결까지 합치면 41권이다.
+42권 중 1차 연결은 21권이고, 2차 연결까지 합치면 42권이다.
 
 | No | 책이름 | 연결한 장 | 연결한 절 | 부록 |
 | --- | --- | --- | --- | --- |
@@ -99,6 +100,7 @@ No와 책이름·링크·출판사는 [교보문고 원자료](books-Kyobo.md)�
 | 39 | AI 에이전트 | [1장*](../AI-For-Work-Index.md#chapter-1), [3장*](../AI-For-Work-Index.md#chapter-3), [20장*](../AI-For-Work-Index.md#chapter-20), [21장*](../AI-For-Work-Index.md#chapter-21), [22장*](../AI-For-Work-Index.md#chapter-22) | 1.1*, 1.2*, 3.2*, 3.3*, 20.1*, 21.4*, 22.2* | — |
 | 40 | 클로드 올인원 with 코워크, 코드, 디자인 | [1장](../AI-For-Work-Index.md#chapter-1), [2장*](../AI-For-Work-Index.md#chapter-2), [3장](../AI-For-Work-Index.md#chapter-3), [4장](../AI-For-Work-Index.md#chapter-4), [5장](../AI-For-Work-Index.md#chapter-5), [6장](../AI-For-Work-Index.md#chapter-6), [8장](../AI-For-Work-Index.md#chapter-8), [10장*](../AI-For-Work-Index.md#chapter-10), [11장](../AI-For-Work-Index.md#chapter-11), [12장](../AI-For-Work-Index.md#chapter-12), [14장](../AI-For-Work-Index.md#chapter-14), [15장](../AI-For-Work-Index.md#chapter-15), [16장](../AI-For-Work-Index.md#chapter-16), [17장*](../AI-For-Work-Index.md#chapter-17), [24장](../AI-For-Work-Index.md#chapter-24) | 1.2, 1.3, 1.4*, 2.1*, 3.4, 4.1, 5.1, 5.3, 5.4, 6.2, 8.2, 8.3, 8.4, 10.1*, 10.2*, 11.1, 11.2*, 11.3, 11.4, 12.1*, 12.2, 12.3, 14.1, 14.2, 14.3, 15.1, 15.4, 16.2, 16.3*, 16.4, 17.3*, 24.1, 24.2 | C |
 | 41 | 바로바로 클로드 with 코워크, 스킬, 클로드 코드, 디자인 | [1장*](../AI-For-Work-Index.md#chapter-1), [6장*](../AI-For-Work-Index.md#chapter-6), [10장*](../AI-For-Work-Index.md#chapter-10), [11장*](../AI-For-Work-Index.md#chapter-11), [12장*](../AI-For-Work-Index.md#chapter-12), [14장*](../AI-For-Work-Index.md#chapter-14), [15장*](../AI-For-Work-Index.md#chapter-15), [19장*](../AI-For-Work-Index.md#chapter-19) | 1.4*, 6.2*, 10.2*, 11.2*, 12.3*, 14.1*, 15.1*, 19.4* | — |
+| 42 | 클로드 에이전트 협업의 기술 | [1장*](../AI-For-Work-Index.md#chapter-1), [14장*](../AI-For-Work-Index.md#chapter-14), [15장*](../AI-For-Work-Index.md#chapter-15), [20장*](../AI-For-Work-Index.md#chapter-20) | 1.2*, 14.1*, 14.2*, 15.1*, 15.2*, 20.1*, 20.2*, 20.4* | — |
 
 ## 2차 연결 근거
 
@@ -366,3 +368,11 @@ No와 책이름·링크·출판사는 [교보문고 원자료](books-Kyobo.md)�
 | 41 | 바로바로 클로드 with 코워크, 스킬, 클로드 코드, 디자인 | [14.1](../AI-For-Work-Index.md#chapter-14) | 「05.1 스킬 시작하기」<br>「__ 스킬과 커넥터는 무엇이 다른가요?」 |
 | 41 | 바로바로 클로드 with 코워크, 스킬, 클로드 코드, 디자인 | [15.1](../AI-For-Work-Index.md#chapter-15) | 「06.2 정해진 시간에 작업 반복하기」<br>「[바로 47] 매일 종합 업무 리포트 받기」 |
 | 41 | 바로바로 클로드 with 코워크, 스킬, 클로드 코드, 디자인 | [19.4](../AI-For-Work-Index.md#chapter-19) | 「06.5 코워크로 옵시디언 관리하기」<br>「__ 클라우드와 로컬 환경 이해하기」 |
+| 42 | 클로드 에이전트 협업의 기술 | [1.2](../AI-For-Work-Index.md#chapter-1) | 「Part 01 클로드 코워크: 나의 첫 번째 에이전트 팀」<br>「1.3 화면 구성 이해하기: 채팅창이 아니라 '작업 공간'이다」 |
+| 42 | 클로드 에이전트 협업의 기술 | [14.1](../AI-For-Work-Index.md#chapter-14) | 「4.1 커넥터란」<br>「5.1 스킬이란」<br>「6.1 플러그인이란」 |
+| 42 | 클로드 에이전트 협업의 기술 | [14.2](../AI-For-Work-Index.md#chapter-14) | 「CHAPTER 4 커넥터: 에이전트에게 손과 발 달아주기」<br>「4.2 지메일 연동: 이메일 비서 에이전트」 |
+| 42 | 클로드 에이전트 협업의 기술 | [15.1](../AI-For-Work-Index.md#chapter-15) | 「CHAPTER 7 예약 작업으로 완전 자동화 에이전트 만들기」<br>「7.2 예약 작업 설정하기」<br>「7.5 꼭 알아야 할 세 가지 한계」 |
+| 42 | 클로드 에이전트 협업의 기술 | [15.2](../AI-For-Work-Index.md#chapter-15) | 「7.8 한 단계 더: 예약 작업을 커넥터, 스킬과 조합하기」 |
+| 42 | 클로드 에이전트 협업의 기술 | [20.1](../AI-For-Work-Index.md#chapter-20) | 「14.1 왜 멀티 에이전트인가: 한 명의 천재보다 역할이 나뉜 팀이 강하다」 |
+| 42 | 클로드 에이전트 협업의 기술 | [20.2](../AI-For-Work-Index.md#chapter-20) | 「14.2 에이전트 역할 설계의 원칙」<br>「14.4 에이전트 간 커뮤니케이션 설계」 |
+| 42 | 클로드 에이전트 협업의 기술 | [20.4](../AI-For-Work-Index.md#chapter-20) | 「17.3 에이전트 성과 관리: 결과물 품질 체크 루틴」<br>「17.4 비용 최적화: Opus는 팀장에게, Sonnet은 실무자에게」 |
