@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: rewrites-review-reply-with-pasted-review
+expected_outcome: |
+  Returns a rewritten prompt that keeps the pasted review as labeled material, states the owner's decisions (no refund, apology, invite back) as conditions, sets a reply format for Google reviews, and does not write the reply itself.

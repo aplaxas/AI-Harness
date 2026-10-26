@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: asks-before-group-booking-text
+expected_outcome: |
+  Asks a short numbered set of questions (with example answers) about missing facts before rewriting, and does not invent dates, prices or write the text message itself.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: rewrites-complete-meeting-email
+expected_outcome: |
+  Returns only a rewritten prompt in a code block with [목적] [자료] [조건] [결과 형식] sections built from the given facts, without asking questions or writing the email.
