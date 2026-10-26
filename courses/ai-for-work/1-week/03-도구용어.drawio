@@ -1,16 +1,16 @@
 <mxfile host="65bd71144e">
     <diagram id="7_nkt__ic7jKYhWqer5Q" name="Page-1">
-        <mxGraphModel dx="1403" dy="751" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+        <mxGraphModel dx="769" dy="775" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="dY0rrUr_VXXxXSYyWgBz-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Agents (Local)" vertex="1">
+                <mxCell id="dY0rrUr_VXXxXSYyWgBz-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Local Agents" vertex="1">
                     <mxGeometry height="40" width="120" x="80" y="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="dY0rrUr_VXXxXSYyWgBz-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Chats (Web)" vertex="1">
                     <mxGeometry height="40" width="120" x="280" y="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="dY0rrUr_VXXxXSYyWgBz-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Bots (VM)" vertex="1">
+                <mxCell id="dY0rrUr_VXXxXSYyWgBz-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Always-on Agents" vertex="1">
                     <mxGeometry height="40" width="120" x="480" y="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="dY0rrUr_VXXxXSYyWgBz-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Harness" vertex="1">
