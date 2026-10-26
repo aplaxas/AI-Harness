@@ -1,11 +1,11 @@
 ---
 name: project-ai-for-work-audience-us
-description: ai-for-work 강의(manuscript2) 청중은 모두 미국에 사는 한인이다. 법·제도 예시는 미국 기준으로 쓴다
+description: ai-for-work 강의(1-week, 2-3-week) 청중은 모두 미국에 사는 한인이다. 법·제도 예시는 미국 기준으로 쓴다
 metadata:
   type: project
 ---
 
-`courses/ai-for-work/manuscript2/` 강의의 청중은 **모두 미국 텍사스 휴스턴에 사는 한인**이다(사무직·소상공인·연구 개발자). 2026-10-18 저자가 알려 줬다. 원고 전체를 휴스턴 기준으로 바꾸기로 했다.
+`courses/ai-for-work/1-week/`·`2-3-week/` 강의(옛 `manuscript2/`)의 청중은 **모두 미국 텍사스 휴스턴에 사는 한인**이다(사무직·소상공인·연구 개발자). 2026-10-18 저자가 알려 줬다. 원고 전체를 휴스턴 기준으로 바꾸기로 했다.
 
 **Why:** 원고 초안은 한국 법(개인정보 보호법, 부정경쟁방지법, AI 기본법 등)과 주민등록번호를 기준으로 쓰여 있었는데, 청중에게는 미국 제도(SSN, 여권 번호, 주(州) 개인정보·유출 통지법, HIPAA/BAA, CCPA 등)가 실제로 적용된다.
 

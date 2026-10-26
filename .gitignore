@@ -1,3 +1,10 @@
 # 작업 도구가 만드는 로컬 산출물 — 원고가 아니므로 추적하지 않는다
 .superpowers/
 .DS_Store
+
+# Office가 파일을 열 때 만드는 잠금 파일
+~$*
+
+# 저작권이 있는 외부 글과 그 전문 번역 — 공개 저장소에 올리지 않는다
+courses/ai-for-work/1-week/참고/Want to get more from AI Treat every prompt like an experiment.pdf
+courses/ai-for-work/1-week/참고/프롬프트실험.md

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <rect width="760" height="330" fill="#ffffff"/>
+  <text x="380" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2937">"휴스턴은 …" 다음에 올 말</text>
+  <text x="380" y="58" text-anchor="middle" font-size="13" fill="#6b7280">설명을 위해 만든 가상의 비율이다. 실제 모델의 숫자가 아니다.</text>
+
+  <!-- 왼쪽: 한국에서 여행 이야기 -->
+  <rect x="20" y="78" width="350" height="230" rx="12" fill="#f3f4f6"/>
+  <text x="195" y="106" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">한국에서 미국 여행 이야기 중</text>
+  <text x="40" y="150" font-size="14" fill="#374151">NASA가 있다</text>
+  <rect x="160" y="136" width="180" height="20" rx="4" fill="#2563eb"/>
+  <text x="40" y="200" font-size="14" fill="#374151">텍사스에 있다</text>
+  <rect x="160" y="186" width="110" height="20" rx="4" fill="#60a5fa"/>
+  <text x="40" y="250" font-size="14" fill="#374151">아주 덥다</text>
+  <rect x="160" y="236" width="60" height="20" rx="4" fill="#93c5fd"/>
+  <text x="195" y="292" text-anchor="middle" font-size="13" fill="#6b7280">가장 그럴듯한 말: "NASA가 있다"</text>
+
+  <!-- 오른쪽: 휴스턴 사는 사람끼리 -->
+  <rect x="390" y="78" width="350" height="230" rx="12" fill="#fef3c7"/>
+  <text x="565" y="106" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">휴스턴 사람끼리 날씨 이야기 중</text>
+  <text x="410" y="150" font-size="14" fill="#374151">아주 덥다</text>
+  <rect x="530" y="136" width="180" height="20" rx="4" fill="#d97706"/>
+  <text x="410" y="200" font-size="14" fill="#374151">NASA가 있다</text>
+  <rect x="530" y="186" width="50" height="20" rx="4" fill="#fbbf24"/>
+  <text x="410" y="250" font-size="14" fill="#374151">텍사스에 있다</text>
+  <rect x="530" y="236" width="35" height="20" rx="4" fill="#fcd34d"/>
+  <text x="565" y="292" text-anchor="middle" font-size="13" fill="#6b7280">가장 그럴듯한 말: "아주 덥다"</text>
+</svg>

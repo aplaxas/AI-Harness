@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="7_nkt__ic7jKYhWqer5Q" name="Page-1">
-        <mxGraphModel dx="615" dy="774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+        <mxGraphModel dx="1403" dy="751" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -99,6 +99,9 @@
                 </mxCell>
                 <mxCell id="jpg0MdKWCB56AJ2Zh5gm-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=none;fontStyle=1;fontSize=34;" value="Harness" vertex="1">
                     <mxGeometry height="40" width="240" x="210" y="490" as="geometry"/>
+                </mxCell>
+                <mxCell id="-YYs5MVU3P_e85Z9I5Ib-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;" value="Duets" vertex="1">
+                    <mxGeometry height="40" width="120" x="480" y="90" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

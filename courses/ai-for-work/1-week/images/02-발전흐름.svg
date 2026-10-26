@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <rect width="900" height="300" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2937">바로 답하던 모델에 무엇을 붙여 왔나</text>
+
+  <line x1="40" y1="150" x2="860" y2="150" stroke="#9ca3af" stroke-width="3"/>
+  <polygon points="860,142 878,150 860,158" fill="#9ca3af"/>
+
+  <!-- 1 -->
+  <circle cx="100" cy="150" r="10" fill="#6b7280"/>
+  <text x="100" y="118" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">다음 낱말 예측</text>
+  <text x="100" y="98" text-anchor="middle" font-size="12" fill="#6b7280">초기 LLM</text>
+  <text x="100" y="182" text-anchor="middle" font-size="13" fill="#374151">그럴듯하게</text>
+  <text x="100" y="200" text-anchor="middle" font-size="13" fill="#374151">바로 답한다</text>
+
+  <!-- 2 -->
+  <circle cx="250" cy="150" r="10" fill="#2563eb"/>
+  <text x="250" y="118" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">RAG</text>
+  <text x="250" y="98" text-anchor="middle" font-size="12" fill="#6b7280">2020</text>
+  <text x="250" y="182" text-anchor="middle" font-size="13" fill="#374151">찾아보고</text>
+  <text x="250" y="200" text-anchor="middle" font-size="13" fill="#374151">답한다</text>
+
+  <!-- 3 -->
+  <circle cx="400" cy="150" r="10" fill="#2563eb"/>
+  <text x="400" y="118" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">RLHF</text>
+  <text x="400" y="98" text-anchor="middle" font-size="12" fill="#6b7280">2022 · ChatGPT</text>
+  <text x="400" y="182" text-anchor="middle" font-size="13" fill="#374151">사람의 평가로</text>
+  <text x="400" y="200" text-anchor="middle" font-size="13" fill="#374151">답을 다듬는다</text>
+
+  <!-- 4 -->
+  <circle cx="550" cy="150" r="10" fill="#059669"/>
+  <text x="550" y="118" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">ReAct</text>
+  <text x="550" y="98" text-anchor="middle" font-size="12" fill="#6b7280">2022</text>
+  <text x="550" y="182" text-anchor="middle" font-size="13" fill="#374151">도구를 쓰고</text>
+  <text x="550" y="200" text-anchor="middle" font-size="13" fill="#374151">결과를 보고 다시</text>
+
+  <!-- 5 -->
+  <circle cx="700" cy="150" r="10" fill="#7c3aed"/>
+  <text x="700" y="118" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">추론 모델</text>
+  <text x="700" y="98" text-anchor="middle" font-size="12" fill="#6b7280">2024 · o1</text>
+  <text x="700" y="182" text-anchor="middle" font-size="13" fill="#374151">답하기 전에</text>
+  <text x="700" y="200" text-anchor="middle" font-size="13" fill="#374151">오래 따져 본다</text>
+
+  <!-- 6 -->
+  <circle cx="830" cy="150" r="10" fill="#d97706"/>
+  <text x="830" y="118" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">하네스</text>
+  <text x="830" y="98" text-anchor="middle" font-size="12" fill="#6b7280">지금</text>
+  <text x="830" y="182" text-anchor="middle" font-size="13" fill="#374151">도구를 쥐여 주고</text>
+  <text x="830" y="200" text-anchor="middle" font-size="13" fill="#374151">일을 끝낸다</text>
+
+  <text x="325" y="250" text-anchor="middle" font-size="13" fill="#2563eb">바깥 자료와 사람으로 보강</text>
+  <text x="625" y="250" text-anchor="middle" font-size="13" fill="#059669">행동(ReAct)과 사고(추론 모델)</text>
+  <text x="450" y="280" text-anchor="middle" font-size="12" fill="#6b7280">연도는 대표 논문이나 제품이 처음 나온 해다. 기술은 겹치며 함께 쓰인다.</text>
+</svg>
