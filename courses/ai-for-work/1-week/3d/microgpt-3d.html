@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>작은 GPT 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 전체 화면 3D 장면 + 왼쪽 유리 패널(휴대폰에서는 아래 시트). 어두운 화면 하나로 고정한다. */
+:root {
+  --bg: #0b1020;
+  --panel: rgba(14, 20, 34, 0.86);
+  --line: rgba(160, 190, 230, 0.16);
+  --fg: #e8edf6;
+  --muted: #8fa3c0;
+  --pos: #3d9bff;
+  --neg: #ff4d5e;
+  --prob: #ffb347;
+  --h1: #ffd166; --h2: #06d6a0; --h3: #c77dff; --h4: #ff9f68;
+  --sans: "IBM Plex Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); overflow: hidden; }
+#stage { position: fixed; inset: 0; }
+#stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+#labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.lbl { position: absolute; left: 0; top: 0; white-space: nowrap; text-align: center;
+  transform: translate(-50%, -100%); text-shadow: 0 1px 6px rgba(0,0,0,.9); will-change: transform, opacity; }
+.lbl b { display: block; font-weight: 700; font-size: 15px; }
+.lbl span { display: block; font-size: 12px; color: var(--muted); }
+.lbl.count { font-family: var(--mono); font-size: 12px; color: var(--muted); transform: translate(-50%, 0); }
+.lbl.ch { font-family: var(--mono); font-size: 11px; color: var(--muted); transform: translate(-100%, -50%); }
+.lbl.ch.r { transform: translate(0, -50%); }
+.lbl.qkv b { font-size: 16px; }
+.lbl.here b { color: #ffd34d; font-size: 16px; }
+
+#panel { position: fixed; top: 16px; left: 16px; width: 330px; max-height: calc(100% - 32px); overflow: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px 14px;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.eyebrow { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+h1 { font-size: 21px; line-height: 1.3; margin: 4px 0 6px; }
+h1 em { font-style: normal; color: var(--prob); }
+p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.55; color: #c9d3e4; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
+.sw { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; vertical-align: middle; margin-right: 2px; }
+.views { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; }
+button { font: inherit; font-size: 13px; color: var(--fg); background: rgba(255,255,255,.06); border: 1px solid var(--line);
+  border-radius: 8px; padding: 8px 6px; cursor: pointer; }
+button:hover { background: rgba(255,255,255,.12); }
+button.on { border-color: var(--prob); color: var(--prob); }
+h2 { font-size: 13px; color: var(--muted); font-weight: 500; margin: 0 0 6px; display: flex; justify-content: space-between; }
+h2 b { color: var(--fg); font-family: var(--mono); font-weight: 500; }
+#tables { list-style: none; margin: 0 0 12px; padding: 0; }
+#tables li { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: baseline; padding: 5px 8px;
+  border-radius: 6px; font-size: 13px; cursor: pointer; }
+#tables li:hover { background: rgba(255,255,255,.06); }
+#tables li.on { background: rgba(255,179,71,.14); }
+#tables .shape { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+#tables .n { font-family: var(--mono); font-size: 12.5px; text-align: right; min-width: 44px; }
+#tables .note { grid-column: 1 / -1; font-size: 11.5px; color: var(--muted); margin-top: -2px; }
+#info { border-top: 1px solid var(--line); padding-top: 10px; font-size: 13px; line-height: 1.55; min-height: 92px; }
+#info .k { color: var(--muted); font-size: 12px; }
+#info .val { font-family: var(--mono); font-size: 26px; font-weight: 500; margin: 2px 0; }
+#info .val.pos { color: var(--pos); } #info .val.neg { color: var(--neg); }
+.foot { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+#toggle { display: none; }
+
+#caption { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); text-align: center; width: min(640px, calc(100% - 32px));
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; transition: opacity .4s; }
+#caption b { font-size: 17px; } #caption div { font-size: 13.5px; color: #c9d3e4; margin-top: 4px; }
+#hint { position: fixed; right: 16px; bottom: 14px; font-size: 12px; color: var(--muted); pointer-events: none; }
+
+@media (max-width: 760px) {
+  #panel { top: auto; bottom: 0; left: 0; right: 0; width: auto; max-height: 46%; border-radius: 14px 14px 0 0; padding: 12px 16px; }
+  #panel.min .body { display: none; }
+  #toggle { display: block; position: absolute; top: 10px; right: 12px; padding: 4px 10px; }
+  h1 { font-size: 18px; padding-right: 60px; }
+  #hint { display: none; }
+  #caption { bottom: auto; top: 12px; }
+  .lbl b { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="labels"></div>
+
+<aside id="panel">
+  <button id="toggle">접기</button>
+  <div class="eyebrow">1주차 · LLM은 어떻게 생겼나</div>
+  <h1>작은 GPT 하나 = 숫자 <em>4,192</em>개</h1>
+  <div class="body">
+    <p>선 하나가 숫자(가중치) 하나다. 글자가 왼쪽에서 들어가 이 숫자들과 곱해지고 더해져서, 오른쪽에서 <b>다음 글자 확률</b>로 나온다.</p>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--pos)"></i>+ 숫자</span>
+      <span><i class="sw" style="background:var(--neg)"></i>− 숫자</span>
+      <span>진할수록 큰 값</span>
+      <span>머리 4개 <i class="dot" style="background:var(--h1)"></i><i class="dot" style="background:var(--h2)"></i><i class="dot" style="background:var(--h3)"></i><i class="dot" style="background:var(--h4)"></i></span>
+    </div>
+    <div class="views">
+      <button data-view="all" class="on">전체 보기</button>
+      <button data-view="attn">어텐션 확대</button>
+      <button data-view="scale">큰 모델과 비교</button>
+      <button id="flow">흐름 재생 ▶</button>
+    </div>
+    <h2>숫자 표 9개 <b id="total">4,192</b></h2>
+    <ul id="tables"></ul>
+    <div id="info"><div class="k">선 위에 마우스를 올리거나 눌러 보세요.</div><div>그 선이 어느 표의 몇 번째 숫자인지 보여준다.</div></div>
+    <div class="foot">이 그림의 숫자는 학습된 값이 아니라 무작위 값(시드 42)이다. 구조와 개수는 microgpt와 같다.</div>
+  </div>
+</aside>
+
+<div id="caption" hidden>
+  <b>GPT-2 small (2019) — 숫자 1.24억 개 ≈ 이 그림 약 3만 개</b>
+  <div>점 하나가 방금 본 그림 하나다. GPT-3(2020)은 숫자 1,750억 개로, 이 정육면체가 약 1,400개 필요하다.</div>
+</div>
+<div id="hint">드래그: 회전 · 휠: 확대/축소 · 우클릭 드래그: 이동</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(() => {
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const col = n => new THREE.Color(css(n));
+
+  // ---- 시드 고정 난수 (mulberry32 + Box-Muller)
+  let seed = 42;
+  const rand = () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const gauss = () => { let u = 0; while (u === 0) u = rand(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * rand()); };
+
+  // ---- 층 배치: x = 흐름, y = 위, z = 깊이
+  const column = (n, x, z = 0, sp = 0.3) => Array.from({ length: n }, (_, i) => V(x, ((n - 1) / 2 - i) * sp, z));
+  const grid = (n, cols, x, z = 0, sp = 0.8) => { const rows = n / cols, out = [];
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) out.push(V(x, ((rows - 1) / 2 - r) * sp, z - (c - (cols - 1) / 2) * sp));
+    return out; };
+  const L = {
+    tok: column(27, 0, 2.2), pos: grid(16, 4, 0, -2.8), emb: grid(16, 4, 6),
+    q: grid(16, 4, 12, 4.2), k: grid(16, 4, 12, 0), v: grid(16, 4, 12, -4.2),
+    mix: grid(16, 4, 16.5), attn: grid(16, 4, 21), mlp: grid(64, 8, 27, 0, 0.62),
+    mlp2: grid(16, 4, 33), out: column(27, 39, 0),
+  };
+  const CHARS = [...'abcdefghijklmnopqrstuvwxyz', '끝'];
+  const head = i => Math.floor(i / 4) + 1;
+  const NAME = {
+    tok: i => `입력 글자 '${CHARS[i]}'`, pos: i => `${i + 1}번째 칸`, emb: i => `임베딩 ${i + 1}`,
+    q: i => `Q ${i + 1} (머리 ${head(i)})`, k: i => `K ${i + 1} (머리 ${head(i)})`, v: i => `V ${i + 1} (머리 ${head(i)})`,
+    mix: i => `섞은 값 ${i + 1}`, attn: i => `어텐션 출력 ${i + 1}`, mlp: i => `MLP ${i + 1}`,
+    mlp2: i => `MLP 출력 ${i + 1}`, out: i => `'${CHARS[i]}'의 점수`,
+  };
+  const MATS = [
+    { id: 'wte', a: 'tok', b: 'emb', ko: '글자 임베딩', note: '글자 하나를 숫자 16개로 바꾼다' },
+    { id: 'wpe', a: 'pos', b: 'emb', ko: '위치 임베딩', note: '몇 번째 칸인지를 숫자로 더한다' },
+    { id: 'attn_wq', a: 'emb', b: 'q', ko: '어텐션 Q', note: '내가 찾는 것' },
+    { id: 'attn_wk', a: 'emb', b: 'k', ko: '어텐션 K', note: '내가 가진 것' },
+    { id: 'attn_wv', a: 'emb', b: 'v', ko: '어텐션 V', note: '내가 건넬 내용' },
+    { id: 'attn_wo', a: 'mix', b: 'attn', ko: '어텐션 출력', note: '앞 글자들과 섞은 결과를 정리한다' },
+    { id: 'mlp_fc1', a: 'attn', b: 'mlp', ko: 'MLP 1층', note: '16개를 64개로 넓혀 생각한다' },
+    { id: 'mlp_fc2', a: 'mlp', b: 'mlp2', ko: 'MLP 2층', note: '64개를 다시 16개로 모은다' },
+    { id: 'lm_head', a: 'mlp2', b: 'out', ko: '출력', note: '글자 27개 각각의 점수를 낸다' },
+  ];
+  for (const m of MATS) m.W = L[m.b].map(() => L[m.a].map(() => gauss() * 0.08 * (rand() < 0.08 ? 2.2 : 1)));
+
+  // ---- 렌더러·카메라
+  const stage = document.getElementById('stage');
+  const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  stage.appendChild(renderer.domElement);
+  const scene = new THREE.Scene();
+  scene.background = col('--bg');
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.05, 40000);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true; controls.dampingFactor = 0.08; controls.screenSpacePanning = true;
+  controls.minDistance = 1.5; controls.maxDistance = 9000; controls.zoomSpeed = 1.3;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x223355, 0.9));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.8); sun.position.set(-10, 20, 30); scene.add(sun);
+
+  // ---- 가중치 선: 표 x 크기 3단계 = LineSegments 하나씩
+  const POS = col('--pos'), NEG = col('--neg');
+  const BASE = [0.12, 0.3, 0.8];
+  const bucket = w => Math.abs(w) < 0.06 ? 0 : Math.abs(w) < 0.13 ? 1 : 2;
+  const lineObjs = [];
+  function addLines(id, segs, base, color) {
+    const pos = new Float32Array(segs.length * 6), cl = new Float32Array(segs.length * 6);
+    segs.forEach((s, i) => {
+      pos.set([s.p0.x, s.p0.y, s.p0.z, s.p1.x, s.p1.y, s.p1.z], i * 6);
+      const c = color || (s.w >= 0 ? POS : NEG);
+      cl.set([c.r, c.g, c.b, c.r, c.g, c.b], i * 6);
+    });
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('color', new THREE.BufferAttribute(cl, 3));
+    const mat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: base, depthWrite: false });
+    const obj = new THREE.LineSegments(g, mat);
+    obj.userData = { id, base, segs }; scene.add(obj); lineObjs.push(obj);
+  }
+  for (const m of MATS) {
+    const by = [[], [], []];
+    m.W.forEach((row, o) => row.forEach((w, i) => by[bucket(w)].push({ m, o, i, w, p0: L[m.a][i], p1: L[m.b][o] })));
+    by.forEach((segs, b) => segs.length && addLines(m.id, segs, BASE[b]));
+  }
+  const mixSegs = [];
+  for (const s of ['q', 'k', 'v']) for (let i = 0; i < 16; i++) mixSegs.push({ p0: L[s][i], p1: L.mix[i] });
+  addLines('mix', mixSegs, 0.22, new THREE.Color('#9aa3bd'));
+
+  // ---- 뉴런
+  const HEADS = ['--h1', '--h2', '--h3', '--h4'].map(col);
+  const WHITE = new THREE.Color('#fff6e0'), HID = new THREE.Color('#a8e1ff');
+  const all = Object.entries(L).flatMap(([k, pts]) => pts.map((p, i) => ({ k, p, i })));
+  const sph = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 20, 12),
+    new THREE.MeshStandardMaterial({ roughness: 0.35, metalness: 0, emissive: 0x223044 }), all.length);
+  const m4 = new THREE.Matrix4();
+  all.forEach((n, j) => {
+    const r = n.k === 'tok' || n.k === 'out' ? 0.1 : 0.14;
+    m4.makeScale(r, r, r).setPosition(n.p); sph.setMatrixAt(j, m4);
+    sph.setColorAt(j, 'qkv'.includes(n.k) ? HEADS[Math.floor(n.i / 4)] : (n.k === 'tok' || n.k === 'out') ? WHITE : HID);
+  });
+  scene.add(sph);
+
+  // ---- 다음 글자 확률 막대
+  const logits = CHARS.map(() => gauss()); logits[0] += 2.6; logits[4] += 1.8; logits[14] += 1.5;
+  const mx = Math.max(...logits), ex = logits.map(l => Math.exp(l - mx)), sum = ex.reduce((a, b) => a + b);
+  const barMat = new THREE.MeshBasicMaterial({ color: col('--prob'), transparent: true, opacity: 0.9 });
+  L.out.forEach((p, i) => {
+    const len = 0.05 + ex[i] / sum * 9;
+    const b = new THREE.Mesh(new THREE.BoxGeometry(len, 0.18, 0.09), barMat);
+    b.position.set(p.x + 0.65 + len / 2, p.y, p.z); scene.add(b);
+  });
+
+  // ---- 규모 비교: microgpt 크기 칸 31^3 = 29,791개 (첫 칸 = 이 그림)
+  const N = 31, CELL = 50, HOME = V(19.5, 0, 0);
+  const gp = new Float32Array((N * N * N - 1) * 3); let gi = 0;
+  for (let x = 0; x < N; x++) for (let y = 0; y < N; y++) for (let z = 0; z < N; z++) {
+    if (!x && !y && !z) continue;
+    gp.set([HOME.x + x * CELL, y * CELL, -z * CELL], gi); gi += 3;
+  }
+  const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.BufferAttribute(gp, 3));
+  const cloudMat = new THREE.PointsMaterial({ color: 0xff8fb4, size: 26, sizeAttenuation: true, transparent: true, opacity: 0, depthWrite: false });
+  const cloud = new THREE.Points(gg, cloudMat); scene.add(cloud);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(34, 1.6, 12, 80), new THREE.MeshBasicMaterial({ color: 0xffc21a, transparent: true, opacity: 0 }));
+  ring.position.copy(HOME); scene.add(ring);
+
+  // ---- 라벨 (화면에 겹쳐 그리는 HTML)
+  const labelsEl = document.getElementById('labels');
+  const labels = [];
+  function label(html, p, cls = '', near = 0, far = 140) {
+    const el = document.createElement('div'); el.className = 'lbl ' + cls; el.innerHTML = html;
+    labelsEl.appendChild(el); labels.push({ el, p, near, far });
+  }
+  const top = k => Math.max(...L[k].map(p => p.y));
+  const center = k => L[k].reduce((a, p) => a.add(p), V(0, 0, 0)).divideScalar(L[k].length);
+  const LAYER = { tok: ['입력 글자', '27개'], pos: ['위치', '16칸'], emb: ['임베딩', '16'], mix: ['문맥 섞기', '가중치 없음'],
+    attn: ['어텐션 출력', '16'], mlp: ['MLP', '64'], mlp2: ['MLP 출력', '16'], out: ['다음 글자 확률', '27개'] };
+  for (const [k, [a, b]] of Object.entries(LAYER)) { const c = center(k); label(`<b>${a}</b><span>${b}</span>`, V(c.x, top(k) + 0.35, c.z)); }
+  label('<b>어텐션</b><span>머리 4개</span>', V(12, top('k') + 0.35, 0));
+  for (const k of ['q', 'k', 'v']) { const c = center(k); label(`<b>${k.toUpperCase()}</b>`, V(c.x, -1.55, c.z), 'qkv', 0, 60); }
+  const COUNTS = [['432', 'tok', 'emb', 1.5], ['256', 'pos', 'emb', -2], ['256 × 3', 'emb', 'k', 0], ['256', 'mix', 'attn', 0],
+    ['1,024', 'attn', 'mlp', 0], ['1,024', 'mlp', 'mlp2', 0], ['432', 'mlp2', 'out', 0]];
+  for (const [t, a, b, z] of COUNTS) label(t, V((L[a][0].x + L[b][0].x) / 2, -3.4, z), 'count', 0, 90);
+  CHARS.forEach((c, i) => {
+    label(c, V(L.tok[i].x - 0.25, L.tok[i].y, L.tok[i].z), 'ch', 0, 28);
+    label(c, V(L.out[i].x + 0.25, L.out[i].y, L.out[i].z), 'ch r', 0, 28);
+  });
+  label('<b>방금 본 그림</b><span>숫자 4,192개</span>', V(HOME.x, 45, 0), 'here', 250, 1e9);
+
+  // ---- 패널: 표 목록
+  const fmt = n => n.toLocaleString('ko-KR');
+  const ul = document.getElementById('tables');
+  let total = 0;
+  for (const m of MATS) {
+    const n = L[m.a].length * L[m.b].length; total += n;
+    const li = document.createElement('li'); li.dataset.id = m.id;
+    li.innerHTML = `<span>${m.ko}</span><span class="shape">${L[m.b].length}×${L[m.a].length}</span><span class="n">${fmt(n)}</span><span class="note">${m.note}</span>`;
+    li.onclick = () => setFocus(focus && focus.size === 1 && focus.has(m.id) ? null : new Set([m.id]));
+    ul.appendChild(li); m.li = li;
+  }
+  document.getElementById('total').textContent = fmt(total);
+
+  let focus = null;
+  function setFocus(s) {
+    focus = s;
+    for (const m of MATS) m.li.classList.toggle('on', !!s && s.has(m.id));
+  }
+
+  // ---- 선 하나 가리키기
+  const info = document.getElementById('info');
+  const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
+  const hl = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+  hl.visible = false; scene.add(hl);
+  const ends = [0, 1].map(() => { const s = new THREE.Mesh(new THREE.SphereGeometry(0.24, 16, 10),
+    new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })); s.visible = false; scene.add(s); return s; });
+  let pinned = false, mouseMoved = false, mouseIn = false;
+  function pick() {
+    const dist = camera.position.distanceTo(controls.target);
+    ray.params.Line.threshold = Math.max(0.02, dist * 0.004);
+    ray.setFromCamera(mouse, camera);
+    const objs = lineObjs.filter(o => o.userData.id !== 'mix' && o.material.opacity > 0.1);
+    const hit = ray.intersectObjects(objs, false)[0];
+    if (!hit) return null;
+    return hit.object.userData.segs[Math.floor(hit.index / 2)];
+  }
+  function show(s) {
+    if (!s) { hl.visible = ends[0].visible = ends[1].visible = false; return; }
+    const d = s.p1.clone().sub(s.p0), len = d.length();
+    hl.position.copy(s.p0).addScaledVector(d, 0.5);
+    hl.quaternion.setFromUnitVectors(V(0, 1, 0), d.normalize());
+    const r = Math.max(0.015, camera.position.distanceTo(hl.position) * 0.0016);
+    hl.scale.set(r, len, r); hl.visible = true;
+    ends[0].position.copy(s.p0); ends[1].position.copy(s.p1); ends[0].visible = ends[1].visible = true;
+    const sign = s.w >= 0 ? 'pos' : 'neg';
+    info.innerHTML = `<div class="k">${s.m.ko} 표 · ${s.m.id} · ${s.o + 1}행 ${s.i + 1}열</div>
+      <div class="val ${sign}">${s.w >= 0 ? '+' : '−'}${Math.abs(s.w).toFixed(3)}</div>
+      <div>${NAME[s.m.a](s.i)} → ${NAME[s.m.b](s.o)}</div>
+      <div class="k">${fmt(total)}개 숫자 중 하나</div>`;
+  }
+  const canvas = renderer.domElement;
+  canvas.addEventListener('pointermove', e => {
+    mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); mouseMoved = true; mouseIn = true;
+  });
+  canvas.addEventListener('pointerleave', () => { mouseIn = false; if (!pinned) show(null); });
+  let downAt = null;
+  canvas.addEventListener('pointerdown', e => { downAt = [e.clientX, e.clientY]; });
+  canvas.addEventListener('pointerup', e => {
+    if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 5) return;
+    mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+    const s = pick(); pinned = !!s; show(s);
+  });
+
+  // ---- 카메라 이동
+  const VIEWS = {
+    all: { pos: V(-13, 15, 34), tgt: V(19.5, -0.5, 0) },
+    attn: { pos: V(5, 4.5, 12), tgt: V(12.5, 0, 0) },
+    scale: { pos: V(-840, 2110, 4650), tgt: V(700, 700, -400) },
+  };
+  let fly = null;
+  function go(name) {
+    const v = VIEWS[name];
+    const o0 = camera.position.clone().sub(controls.target), o1 = v.pos.clone().sub(v.tgt);
+    const far = Math.abs(Math.log(o1.length() / o0.length())) > 2;
+    fly = { t0: performance.now(), dur: far ? 2600 : 1400, t0v: controls.target.clone(), t1v: v.tgt.clone(),
+      d0: o0.clone().normalize(), d1: o1.clone().normalize(), l0: o0.length(), l1: o1.length() };
+    document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === name));
+  }
+  document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => go(b.dataset.view));
+  controls.addEventListener('start', () => { fly = null; document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('on')); });
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function stepFly(now) {
+    if (!fly) return;
+    const t = Math.min(1, (now - fly.t0) / fly.dur), e = ease(t);
+    controls.target.lerpVectors(fly.t0v, fly.t1v, e);
+    const dir = fly.d0.clone().lerp(fly.d1, e).normalize();
+    const len = Math.exp(Math.log(fly.l0) + (Math.log(fly.l1) - Math.log(fly.l0)) * e);   // 거리는 로그로 바꿔 부드럽게
+    camera.position.copy(controls.target).addScaledVector(dir, len);
+    if (t >= 1) fly = null;
+  }
+
+  // ---- 흐름 재생
+  const FLOW = [['wte', 'wpe'], ['attn_wq', 'attn_wk', 'attn_wv'], ['mix'], ['attn_wo'], ['mlp_fc1'], ['mlp_fc2'], ['lm_head']];
+  const flowBtn = document.getElementById('flow');
+  let flowT = null;
+  flowBtn.onclick = () => {
+    if (flowT) { clearTimeout(flowT); flowT = null; setFocus(null); flowBtn.classList.remove('on'); return; }
+    flowBtn.classList.add('on');
+    let i = 0;
+    const next = () => {
+      if (i === FLOW.length) { flowT = setTimeout(() => { setFocus(null); flowBtn.classList.remove('on'); flowT = null; }, 900); return; }
+      setFocus(new Set(FLOW[i++])); flowT = setTimeout(next, 750);
+    };
+    next();
+  };
+
+  // ---- 패널 접기 (휴대폰)
+  const panel = document.getElementById('panel'), toggle = document.getElementById('toggle');
+  toggle.onclick = () => { panel.classList.toggle('min'); toggle.textContent = panel.classList.contains('min') ? '펼치기' : '접기'; };
+
+  // ---- 그리기
+  const caption = document.getElementById('caption');
+  const tmp = new THREE.Vector3();
+  const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  function resize() {
+    renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight;
+    // 넓은 화면에서는 화면 중심을 왼쪽 패널 폭의 절반만큼 오른쪽으로 민다
+    if (innerWidth > 760) camera.setViewOffset(innerWidth + 362, innerHeight, 0, 0, innerWidth, innerHeight);
+    else camera.clearViewOffset();
+    camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize); resize();
+  camera.position.copy(VIEWS.all.pos); controls.target.copy(VIEWS.all.tgt);
+
+  function frame(now) {
+    stepFly(now);
+    controls.update();
+    const homeDist = camera.position.distanceTo(HOME);
+
+    for (const o of lineObjs) {
+      const id = o.userData.id, b = o.userData.base;
+      const want = !focus ? b : focus.has(id) ? Math.min(1, b * 1.6) : b * 0.07;
+      o.material.opacity += (want - o.material.opacity) * 0.15;
+    }
+    const sc = smooth(120, 500, homeDist);
+    cloudMat.opacity = sc * 0.9; cloud.visible = sc > 0.01;
+    ring.material.opacity = smooth(180, 350, homeDist); ring.visible = ring.material.opacity > 0.01; ring.lookAt(camera.position);
+    const showCap = homeDist > 900;
+    if (caption.hidden === showCap) caption.hidden = !showCap;
+
+    if (mouseMoved && mouseIn && !pinned && !fly) { mouseMoved = false; show(pick()); }
+
+    const w = innerWidth, h = innerHeight;
+    for (const l of labels) {
+      const d = camera.position.distanceTo(l.p);
+      const a = d < l.near || d > l.far ? 0 : Math.min(1, (l.far - d) / (l.far * 0.25)) * Math.min(1, l.near ? (d - l.near) / l.near : 1);
+      tmp.copy(l.p).project(camera);
+      if (a <= 0.01 || tmp.z > 1) { l.el.style.opacity = 0; continue; }
+      l.el.style.opacity = a.toFixed(2);
+      l.el.style.left = ((tmp.x + 1) / 2 * w).toFixed(1) + 'px';
+      l.el.style.top = ((1 - tmp.y) / 2 * h).toFixed(1) + 'px';
+    }
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
